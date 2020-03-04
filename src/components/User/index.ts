@@ -1,7 +1,9 @@
-const UserService = require('./services/tableService');
+import UserService from './services/tableService';
 const UserValidation = require('./validation');
 const ValidationError = require('../../error/ValidationError');
 const getUserStat = require('./services/statistic');
+import { NextFunction, Request, Response } from 'express';
+import { IUserModel } from './model';
 
 /**
  * @function
@@ -10,7 +12,7 @@ const getUserStat = require('./services/statistic');
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-async function findAll(req, res, next) {
+async function findAll(req: Request, res: Response, next: NextFunction) {
     try {
         const users = await UserService.findAll();
 
@@ -39,9 +41,10 @@ async function findAll(req, res, next) {
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-async function getStatistic(req, res, next) {
+async function getStatistic(req: Request, res: Response, next: NextFunction) {
     try {
         const statistic = await getUserStat(30);
+
         res.status(200).render('index', {
             csrfToken: req.csrfToken(),
             template: 'users/statistic.ejs',
@@ -64,7 +67,7 @@ async function getStatistic(req, res, next) {
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-async function findById(req, res, next) {
+async function findById(req: Request, res: Response, next: NextFunction) {
     try {
         const { error } = UserValidation.findById(req.params);
 
@@ -101,7 +104,7 @@ async function findById(req, res, next) {
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-async function create(req, res, next) {
+async function create(req: Request, res: Response, next: NextFunction) {
     try {
         const { error } = UserValidation.create(req.body);
 
@@ -116,14 +119,17 @@ async function create(req, res, next) {
             id: user.id,
             name: user.fullName,
         });
+
         return res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             req.flash('error', error.message);
+
             return res.redirect('/v1/users');
         }
         if (error.name === 'MongoError') {
             req.flash('error', { name: error.name, message: error.errmsg });
+
             return res.redirect('/v1/users');
         }
         req.flash('error', { name: error.name, message: error.message });
@@ -140,7 +146,7 @@ async function create(req, res, next) {
  * @param {express.NextFunction} next
  * @returns {Promise<void>}
  */
-async function updateById(req, res, next) {
+async function updateById(req: Request, res: Response, next: NextFunction) {
     try {
         const { error } = UserValidation.updateById(req.body);
 
@@ -176,7 +182,7 @@ async function updateById(req, res, next) {
  * @param {express.NextFunction} next
  * @returns {Promise<void>}
  */
-async function deleteById(req, res, next) {
+async function deleteById(req: Request, res: Response, next: NextFunction) {
     try {
         const { error } = UserValidation.deleteById(req.body);
 
@@ -191,6 +197,7 @@ async function deleteById(req, res, next) {
             id: user.id,
             name: user.fullName,
         });
+
         return res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {

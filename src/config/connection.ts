@@ -1,10 +1,20 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
+import * as mongoose from 'mongoose';
 
-const MONGODB_URI = 'mongodb://localhost:27017/';
-const MONGODB_DB_MAIN = 'users_db';
-const MONGO_URI = `${MONGODB_URI}${MONGODB_DB_MAIN}`;
+interface IConnectOptions {
+    autoReconnect: boolean;
+    reconnectTries: number; // Never stop trying to reconnect
+    reconnectInterval: number;
+    useNewUrlParser?: boolean;
+    useCreateIndex?: boolean;
+    useUnifiedTopology?: boolean;
+}
 
-const connectOptions = {
+const MONGODB_URI: string = 'mongodb://localhost:27017/';
+const MONGODB_DB_MAIN: string = 'users_db';
+const MONGO_URI: string = `${MONGODB_URI}${MONGODB_DB_MAIN}`;
+
+const connectOptions: IConnectOptions = {
     // automatically try to reconnect when it loses connection
     autoReconnect: true,
     // reconnect every reconnectInterval milliseconds
@@ -18,4 +28,4 @@ const connectOptions = {
     useCreateIndex: true,
 };
 
-module.exports = mongoose.createConnection(MONGO_URI, connectOptions);
+export default mongoose.createConnection(MONGO_URI, connectOptions);

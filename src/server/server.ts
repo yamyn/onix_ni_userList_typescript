@@ -1,26 +1,28 @@
-const express = require('express');
-const middleware = require('../config/middleware');
-const routes = require('../config/router');
+import * as express from 'express';
+import * as Middleware from '../config/middleware';
+import * as Routes from '../config/router';
 
 /**
- * @type {express}
  * @constant {express.Application}
  */
-const app = express();
+const app: express.Application = express();
 
 /**
- * @description express.Application Middleware
+ * @constructs express.Application Middleware
  */
-middleware.init(app);
+Middleware.configure(app);
 
 /**
- * @description express.Application Routes
+ * @constructs express.Application Routes
  */
-routes.init(app);
+Routes.init(app);
 
 /**
  * @description sets port 3030 to default or unless otherwise specified in the environment
  */
 app.set('port', process.env.PORT || 3030);
 
-module.exports = app;
+/**
+ * @exports {express.Application}
+ */
+export default app;
