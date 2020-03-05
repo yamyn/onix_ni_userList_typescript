@@ -1,7 +1,13 @@
 import { Document, Schema } from 'mongoose';
 import * as connections from '../../config/connection';
+import { AggregationCursor } from 'mongodb';
 
 export interface IUserModel extends Document {
+    fullname: string;
+    email: string;
+}
+
+export interface IStatModel extends AggregationCursor {
     fullname: string;
     email: string;
 }
