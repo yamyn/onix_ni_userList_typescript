@@ -1,4 +1,5 @@
 import Validation from '../validation';
+import * as Joi from '@hapi/joi';
 
 /**
  * @exports
@@ -12,11 +13,9 @@ class UserValidation extends Validation {
      * @memberof UserValidation
      */
     findById(data) {
-        return this.customJoi
-            .object({
-                id: this.customJoi.objectId(),
-            })
-            .validate(data);
+        return this.Joi.object({
+            id: this.Joi.objectId(),
+        }).validate(data);
     }
 
     /**
@@ -26,18 +25,15 @@ class UserValidation extends Validation {
      * @memberof UserValidation
      */
     create(profile) {
-        return this.customJoi
-            .object({
-                email: this.customJoi.string().email(),
-                fullName: this.customJoi
-                    .string()
-                    .min(3)
-                    .max(30)
-                    .required(),
-            })
-            .validate(profile, {
-                allowUnknown: true,
-            });
+        return this.Joi.object({
+            email: this.Joi.string().email(),
+            fullName: this.Joi.string()
+                .min(3)
+                .max(30)
+                .required(),
+        }).validate(profile, {
+            allowUnknown: true,
+        });
     }
 
     /**
@@ -47,16 +43,13 @@ class UserValidation extends Validation {
      * @memberof UserValidation
      */
     updateById(data) {
-        return this.customJoi
-            .object({
-                id: this.customJoi.objectId(),
-                fullName: this.customJoi
-                    .string()
-                    .min(3)
-                    .max(30)
-                    .required(),
-            })
-            .validate(data, { allowUnknown: true });
+        return this.Joi.object({
+            id: this.Joi.objectId(),
+            fullName: this.Joi.string()
+                .min(3)
+                .max(30)
+                .required(),
+        }).validate(data, { allowUnknown: true });
     }
 
     /**
@@ -71,4 +64,4 @@ class UserValidation extends Validation {
     }
 }
 
-export default new UserValidation();
+module.exports = new UserValidation();

@@ -12,7 +12,7 @@ import { IUserModel } from './model';
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-async function findAll(req: Request, res: Response, next: NextFunction) {
+export async function findAll(req: Request, res: Response, next: NextFunction) {
     try {
         const users = await UserService.findAll();
 
@@ -41,7 +41,11 @@ async function findAll(req: Request, res: Response, next: NextFunction) {
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-async function getStatistic(req: Request, res: Response, next: NextFunction) {
+export async function getStatistic(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) {
     try {
         const statistic = await getUserStat(30);
 
@@ -67,7 +71,11 @@ async function getStatistic(req: Request, res: Response, next: NextFunction) {
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-async function findById(req: Request, res: Response, next: NextFunction) {
+export async function findById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) {
     try {
         const { error } = UserValidation.findById(req.params);
 
@@ -104,7 +112,7 @@ async function findById(req: Request, res: Response, next: NextFunction) {
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-async function create(req: Request, res: Response, next: NextFunction) {
+export async function create(req: Request, res: Response, next: NextFunction) {
     try {
         const { error } = UserValidation.create(req.body);
 
@@ -146,7 +154,11 @@ async function create(req: Request, res: Response, next: NextFunction) {
  * @param {express.NextFunction} next
  * @returns {Promise<void>}
  */
-async function updateById(req: Request, res: Response, next: NextFunction) {
+export async function updateById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) {
     try {
         const { error } = UserValidation.updateById(req.body);
 
@@ -182,7 +194,11 @@ async function updateById(req: Request, res: Response, next: NextFunction) {
  * @param {express.NextFunction} next
  * @returns {Promise<void>}
  */
-async function deleteById(req: Request, res: Response, next: NextFunction) {
+export async function deleteById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) {
     try {
         const { error } = UserValidation.deleteById(req.body);
 
@@ -215,11 +231,11 @@ async function deleteById(req: Request, res: Response, next: NextFunction) {
     }
 }
 
-module.exports = {
-    findAll,
-    getStatistic,
-    findById,
-    create,
-    updateById,
-    deleteById,
-};
+// export default {
+//     findAll,
+//     getStatistic,
+//     findById,
+//     create,
+//     updateById,
+//     deleteById,
+// };

@@ -1,7 +1,12 @@
-const { Schema } = require('mongoose');
-const connections = require('../../config/connection');
+import { Document, Schema } from 'mongoose';
+import * as connections from '../../config/connection';
 
-const UserSchema = new Schema(
+export interface IUserModel extends Document {
+    fullname: string;
+    email: string;
+}
+
+const UserSchema: Schema = new Schema(
     {
         fullName: {
             type: String,
@@ -14,13 +19,12 @@ const UserSchema = new Schema(
             unique: true,
         },
     },
+
     {
         timestamps: true,
-    },
-    {
         collection: 'usermodel',
         versionKey: false,
     },
 );
 
-module.exports = connections.model('UserModel', UserSchema);
+export default connections.db.model<IUserModel>('UserModel', UserSchema);

@@ -28,4 +28,7 @@ const connectOptions: IConnectOptions = {
     useCreateIndex: true,
 };
 
-export default mongoose.createConnection(MONGO_URI, connectOptions);
+export const db: mongoose.Connection = mongoose.createConnection(
+    MONGO_URI,
+    connectOptions,
+);

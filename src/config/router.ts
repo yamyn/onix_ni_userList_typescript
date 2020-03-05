@@ -1,16 +1,15 @@
-import * as express from "express";
-import * as http from "http";
-import * as UserRouter '../components/User/router';
-import * as EmailListRouter '../components/EmailsList/router';
-import * as ScreensRouter '../components/Screens/router';
+import * as express from 'express';
+import * as http from 'http';
+import * as UserRouter from '../components/User/router';
+import * as EmailListRouter from '../components/EmailsList/router';
+import * as ScreensRouter from '../components/Screens/router';
 
-
-    /**
-     * @function
-     * @param {express.Application} app
-     * @summary init Application router
-     * @returns void
-     */
+/**
+ * @function
+ * @param {express.Application} app
+ * @summary init Application router
+ * @returns void
+ */
 export function init(app: express.Application): void {
     const router: express.Router = express.Router();
 
@@ -50,7 +49,7 @@ export function init(app: express.Application): void {
      * @inner
      * @param {callback} middleware - Express middleware.
      */
-    app.use(( req: express.Request, res: express.Response): void => {
+    app.use((req: express.Request, res: express.Response): void => {
         res.status(404).send(http.STATUS_CODES[404]);
     });
 
@@ -61,4 +60,3 @@ export function init(app: express.Application): void {
      */
     app.use(router);
 }
-

@@ -1,12 +1,12 @@
-const { Router } = require('express');
-const UserComponent = require('../User');
+import { Router } from 'express';
+import * as UserComponent from '../User';
 
 /**
  * Express router to mount user related functions on.
  * @type {Express.Router}
  * @const
  */
-const router = Router();
+const router: Router = Router();
 
 /**
  * Route serving list of users.
@@ -19,7 +19,7 @@ const router = Router();
 router.get('/', UserComponent.findAll);
 
 /**
- * Route serving list of users.
+ * Route serving a users statictic
  * @name /v1/users
  * @function
  * @inner
@@ -48,7 +48,7 @@ router.get('/statistic', UserComponent.getStatistic);
 router.post('/', UserComponent.create);
 
 /**
- * Route serving a new user
+ * Route serving updating user
  * @name /v1/users
  * @function
  * @inner
@@ -58,7 +58,7 @@ router.post('/', UserComponent.create);
 router.put('/', UserComponent.updateById);
 
 /**
- * Route serving a new user
+ * Route serving a removing user
  * @name /v1/users
  * @function
  * @inner
@@ -67,4 +67,7 @@ router.put('/', UserComponent.updateById);
  */
 router.delete('/', UserComponent.deleteById);
 
-module.exports = router;
+/**
+ * @export {express.Router}
+ */
+export default router;
