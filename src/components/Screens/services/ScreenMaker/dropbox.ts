@@ -4,7 +4,7 @@ import * as fetch from 'isomorphic-fetch';
 const dropbox: Dropbox = new Dropbox({
     fetch,
     accessToken:
-        'MNnmrb80hFAAAAAAAAAAOruhlRmb67QABGnWd0bSnEFMQg__pmVYP3NTK2eZ9mbu',
+        'MNnmrb80hFAAAAAAAAAAQNJn_X5D43kXkIR9fg8XM5qc8zt2BFqo76RMpDXPPIrM',
 });
 
 /**
@@ -36,7 +36,7 @@ async function getImageLink(screenName: string): Promise<string> {
         .then(
             (
                 ImgMetaData: DropboxTypes.sharing.SharedLinkMetadataReference,
-            ): string => ImgMetaData.url,
+            ): string | any => ImgMetaData.url,
         );
 }
 

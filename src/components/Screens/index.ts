@@ -1,4 +1,4 @@
-import ScreenListService from './services/dBService';
+import ScreensService from './services/dBService';
 import { NextFunction, Request, Response } from 'express';
 import { IScreensModel } from './model';
 /**
@@ -14,7 +14,7 @@ export async function findAll(
     next: NextFunction,
 ): Promise<void> {
     try {
-        const screens: IScreensModel[] = await ScreenListService.findAll();
+        const screens: IScreensModel[] = await ScreensService.findAll();
 
         res.status(200).json({ screens });
     } catch (error) {

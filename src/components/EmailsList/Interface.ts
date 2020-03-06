@@ -12,9 +12,9 @@ export interface IEmailListService {
     findAll(): Promise<IEmailListModel[]>;
 
     /**
-     * @param {IUserModel} IUserModel
-     * @returns {Promise<IUserModel>}
-     * @memberof IUserService
+     * @param {IEmailListModel} IEmailListModel
+     * @returns {Promise<IEmailListModel>}
+     * @memberof IEmailListService
      */
     create(IEmailListModel: IEmailListModel): Promise<IEmailListModel>;
 }

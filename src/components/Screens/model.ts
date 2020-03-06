@@ -19,4 +19,7 @@ const ScreensSchema: Schema = new Schema(
     },
 );
 
-export default connections.db.model<IScreensModel>('Screens', ScreensSchema);
+export default connections.db.model<IScreensModel>(
+    'ScreensModel',
+    ScreensSchema,
+);

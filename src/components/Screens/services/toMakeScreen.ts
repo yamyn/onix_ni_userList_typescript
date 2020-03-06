@@ -1,5 +1,5 @@
 import ScreenMaker from './ScreenMaker';
-import ScreenListService from './dBService';
+import ScreensService from './dBService';
 import { IScreensModel } from '../model';
 
 /**
@@ -17,11 +17,11 @@ async function toMakeScreen(): Promise<void> {
             screen,
         );
 
-        const imgLink: string = await ScreenMaker.imageService.getImageLink(
-            imgName,
-        );
+        const imgLink:
+            | string
+            | any = await ScreenMaker.imageService.getImageLink(imgName);
 
-        await ScreenListService.create(imgLink).then(
+        await ScreensService.create(imgLink).then(
             (res: IScreensModel): void => {
                 if (res._id) {
                     // tslint:disable-next-line:no-console
