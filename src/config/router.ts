@@ -1,8 +1,8 @@
 import * as express from 'express';
 import * as http from 'http';
-import * as UserRouter from '../components/User/router';
-import * as EmailListRouter from '../components/EmailsList/router';
-import * as ScreensRouter from '../components/Screens/router';
+import UserRouter from '../components/User/router';
+// import EmailListRouter from '../components/EmailsList/router';
+// import ScreensRouter from '../components/Screens/router';
 
 /**
  * @function
@@ -31,7 +31,7 @@ export function init(app: express.Application): void {
      * @param {string} path - Express path
      * @param {callback} middleware - Express middleware.
      */
-    app.use('/v1/emails', EmailListRouter);
+    // app.use('/v1/emails', EmailListRouter);
 
     /**
      * Forwards any requests to the /v1/screens URI to ScreensRouter.
@@ -41,7 +41,7 @@ export function init(app: express.Application): void {
      * @param {string} path - Express path
      * @param {callback} middleware - Express middleware.
      */
-    app.use('/v1/screens', ScreensRouter);
+    // app.use('/v1/screens', ScreensRouter);
 
     /**
      * @description No results returned mean the object is not found

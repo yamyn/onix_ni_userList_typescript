@@ -1,30 +1,38 @@
 import Validation from '../validation';
 import * as Joi from '@hapi/joi';
+import { IUserModel } from './model';
 
 /**
- * @exports
- * @class
+ * @export
+ * @class UserValidation
  * @extends Validation
  */
 class UserValidation extends Validation {
     /**
-     * @param {String} data.id - objectId
-     * @returns
+     * Creates an instance of UserValidation.
      * @memberof UserValidation
      */
-    findById(data) {
-        return this.Joi.object({
-            id: this.Joi.objectId(),
-        }).validate(data);
+    constructor() {
+        super();
     }
 
     /**
-     * @param {String} profile.email
-     * @param {String} profile.fullName
-     * @returns
+     * @param {{ id: string }} body
+     * @returns {Joi.ValidationResult}
      * @memberof UserValidation
      */
-    create(profile) {
+    findOne(body: { id: string }): Joi.ValidationResult {
+        return this.Joi.object({
+            id: this.Joi.objectId(),
+        }).validate(body);
+    }
+
+    /**
+     * @param {IUserModel} params
+     * @returns {Joi.ValidationResult}
+     * @memberof UserValidation
+     */
+    create(profile: IUserModel): Joi.ValidationResult {
         return this.Joi.object({
             email: this.Joi.string().email(),
             fullName: this.Joi.string()
@@ -37,31 +45,30 @@ class UserValidation extends Validation {
     }
 
     /**
-     * @param {String} data.id - objectId
-     * @param {String} data.fullName
-     * @returns
+     * @param {{ id: string }} body
+     * @returns {Joi.ValidationResult}
      * @memberof UserValidation
      */
-    updateById(data) {
+    updateById(body: { id: string }): Joi.ValidationResult {
         return this.Joi.object({
             id: this.Joi.objectId(),
             fullName: this.Joi.string()
                 .min(3)
                 .max(30)
                 .required(),
-        }).validate(data, { allowUnknown: true });
+        }).validate(body, { allowUnknown: true });
     }
 
     /**
-     * @param {String} data.id - objectId
-     * @returns
+     * @param {{ id: string }} body
+     * @returns {Joi.ValidationResult}
      * @memberof UserValidation
      */
-    deleteById(data) {
+    deleteById(body: { id: string }): Joi.ValidationResult {
         return this.Joi.object({
             id: this.Joi.objectId(),
-        }).validate(data, { allowUnknown: true });
+        }).validate(body, { allowUnknown: true });
     }
 }
 
-module.exports = new UserValidation();
+export default new UserValidation();

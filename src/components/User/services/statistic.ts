@@ -1,8 +1,6 @@
 import * as moment from 'moment';
-import UserModel from '../model';
+import { IStatModel } from '../model';
 import UserService from './tableService';
-import { Aggregate } from 'mongoose';
-import { AggregationCursor } from 'mongodb';
 
 /**
  * @function
@@ -23,33 +21,42 @@ function countMsInDays(dayCount: number): string {
 }
 
 /**
+ * @export
+ * @interface IUserStatistic
+ */
+
+export interface IUserStatistic {
+    labels: string[];
+    count: number[];
+}
+
+/**
+ * @export
  * @function
  * @param {number} dayCount - count day ago
  * @returns {object} userStatistic
  */
-async function getUserStat(dayCount: number): Promise<object> {
+export async function getUserStat(dayCount: number): Promise<IUserStatistic> {
     const lastMonthDay: number =
         moment()
             .utc()
             .dayOfYear() - dayCount;
 
-    const userStatisticArr: Aggregate<AggregationCursor[]> = await UserService.getStatistic(
+    const userStatisticArr: IStatModel[] = await UserService.getStatistic(
         lastMonthDay,
     );
 
-    console.log(userStatisticArr);
-    const userStatistic = {
+    const userStatistic: IUserStatistic = {
         labels: [],
         count: [],
     };
-    userStatisticArr.map(obj => {
-        const date = countMsInDays(obj._id);
+
+    userStatisticArr.map((obj: IStatModel): void => {
+        const date: string = countMsInDays(obj._id);
+
         userStatistic.labels.push(date);
         userStatistic.count.push(obj.number);
-        return;
     });
 
     return userStatistic;
 }
-
-module.exports = getUserStat;

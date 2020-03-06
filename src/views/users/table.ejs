@@ -91,15 +91,15 @@
     integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
     crossorigin="anonymous"
 ></script>
-<script>
-const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-const tBody = document.querySelector("#userTBody");
-const emailsElem = [...tBody.querySelectorAll("#user-email")];
+// <script>
+// const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+// const tBody = document.querySelector("#userTBody");
+// const emailsElem = [...tBody.querySelectorAll("#user-email")];
 
-const emails = emailsElem.map(email => email.textContent);
+// const emails = emailsElem.map(email => email.textContent);
 
 
-// window.addEventListener("beforeunload", function (emails){
+// function postEmailsHandler(emails) {
 //   console.log("handlerr!");
 //   const url = "http://localhost:3000/v1/emails";
 //   const options = {
@@ -111,39 +111,21 @@ const emails = emailsElem.map(email => email.textContent);
 //     },
 //     body: JSON.stringify({emails})
 //   };
+//   return fetch(url, options).then(res => console.log(res));
+// };
+// window.addEventListener('beforeunload', onbeforeunload);
+// function onbeforeunload(e) {
+//   const url = "http://localhost:3000/v1/emails";
+//   const options = {
+//     credentials: 'same-origin',
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       "CSRF-Token": token
+//     },
+//     body: JSON.stringify({emails})
+//   };
 //   fetch(url, options).then(res => console.log(res));
-    
-// });
-
-// window.onunload = postEmailsHandler(emails);
-
-function postEmailsHandler(emails) {
-  console.log("handlerr!");
-  const url = "http://localhost:3000/v1/emails";
-  const options = {
-    credentials: 'same-origin',
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "CSRF-Token": token
-    },
-    body: JSON.stringify({emails})
-  };
-  return fetch(url, options).then(res => console.log(res));
-};
-window.addEventListener('beforeunload', onbeforeunload);
-function onbeforeunload(e) {
-  const url = "http://localhost:3000/v1/emails";
-  const options = {
-    credentials: 'same-origin',
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "CSRF-Token": token
-    },
-    body: JSON.stringify({emails})
-  };
-  fetch(url, options).then(res => console.log(res));
-  return false;
-};
-</script>
+//   return false;
+// };
+// </script>

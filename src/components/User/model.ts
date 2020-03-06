@@ -8,8 +8,8 @@ export interface IUserModel extends Document {
 }
 
 export interface IStatModel extends AggregationCursor {
-    fullname: string;
-    email: string;
+    _id: number;
+    number: number;
 }
 
 const UserSchema: Schema = new Schema(
@@ -28,7 +28,7 @@ const UserSchema: Schema = new Schema(
 
     {
         timestamps: true,
-        collection: 'usermodel',
+        collection: 'usermodels',
         versionKey: false,
     },
 );

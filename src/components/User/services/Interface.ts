@@ -1,7 +1,5 @@
 import { IUserModel, IStatModel } from '../model';
-import { Aggregate, Types } from 'mongoose';
-// import { Types } from '@hapi/joi';
-import { AggregationCursor } from 'mongodb';
+import { Aggregate } from 'mongoose';
 
 /**
  * @export
@@ -47,5 +45,5 @@ export interface IUserService {
      * @returns {Aggregate<AggregationCursor[]}
      * @memberof IUserService
      */
-    getStatistic(lastMonthDay: number): Promise<IStatModel[]>;
+    getStatistic(lastMonthDay: number): Aggregate<IStatModel[]>;
 }

@@ -1,7 +1,6 @@
 import UserModel, { IUserModel, IStatModel } from '../model';
 import { IUserService } from './Interface';
 import { Types, QueryUpdateOptions, Aggregate } from 'mongoose';
-import { AggregationCursor } from 'mongodb';
 
 /**
  * @export
@@ -78,7 +77,7 @@ const UserService: IUserService = {
      * @returns {Aggregate<AggregationCursor[]>}
      * @memberof UserService
      */
-    getStatistic(lastMonthDay: number): Promise<IUserModel[]> {
+    getStatistic(lastMonthDay: number): Aggregate<IStatModel[]> {
         return UserModel.aggregate([
             {
                 $project: {

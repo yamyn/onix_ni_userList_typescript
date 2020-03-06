@@ -1,40 +1,44 @@
 import UserService from './services/tableService';
-const UserValidation = require('./validation');
-const ValidationError = require('../../error/ValidationError');
-const getUserStat = require('./services/statistic');
+import UserValidation from './validation';
+import ValidationError from '../../error/ValidationError';
+import { getUserStat, IUserStatistic } from './services/statistic';
 import { NextFunction, Request, Response } from 'express';
 import { IUserModel } from './model';
+import Joi = require('@hapi/joi');
 
 /**
+ * @export
  * @function
  * @param {express.Request} req
  * @param {express.Response} res
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-export async function findAll(req: Request, res: Response, next: NextFunction) {
+export async function findAll(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
     try {
-        const users = await UserService.findAll();
+        const users: IUserModel[] = await UserService.findAll();
 
         res.status(200).render('index', {
+            users,
             csrfToken: req.csrfToken(),
             template: 'users/table.ejs',
-            users,
             errors: req.flash('error'),
             successes: req.flash('sucsess'),
         });
     } catch (error) {
-        res.status(500).render('errors/validError.ejs', {
-            method: 'get',
-            name: error.name,
-            message: null,
-        });
+        req.flash('error', `${error.name}: ${error.message}`);
+        res.redirect('/v1/users');
 
         next(error);
     }
 }
 
 /**
+ * @export
  * @function
  * @param {express.Request} req
  * @param {express.Response} res
@@ -45,55 +49,60 @@ export async function getStatistic(
     req: Request,
     res: Response,
     next: NextFunction,
-) {
+): Promise<void> {
     try {
-        const statistic = await getUserStat(30);
+        const statistic: IUserStatistic = await getUserStat(30);
 
         res.status(200).render('index', {
+            statistic,
             csrfToken: req.csrfToken(),
             template: 'users/statistic.ejs',
-            statistic,
             errors: req.flash('error'),
             successes: req.flash('sucsess'),
         });
     } catch (error) {
-        req.flash('error', { name: error.name, message: error.message });
+        req.flash('error', `${error.name}: ${error.message}`);
         res.redirect('/v1/users');
 
         next(error);
     }
 }
-
 /**
+ * @export
  * @function
  * @param {express.Request} req
  * @param {express.Response} res
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
+
 export async function findById(
     req: Request,
     res: Response,
     next: NextFunction,
-) {
+): Promise<void> {
     try {
-        const { error } = UserValidation.findById(req.params);
+        const { error }: Joi.ValidationResult = UserValidation.findOne({
+            id: req.params.id,
+        });
 
         if (error) {
-            throw new ValidationError(error.details);
+            throw new ValidationError(error.details[0].message);
         }
 
-        const user = await UserService.findById(req.params.id);
+        const user: IUserModel = await UserService.findOne(req.params.id);
 
-        return res.status(200).json({
+        res.status(200).json({
             data: user,
         });
     } catch (error) {
         if (error instanceof ValidationError) {
-            return res.status(422).json({
+            res.status(422).json({
                 error: error.name,
                 details: error.message,
             });
+
+            return;
         }
 
         res.status(500).json({
@@ -101,34 +110,38 @@ export async function findById(
             details: error.message,
         });
 
-        return next(error);
+        next(error);
     }
 }
 
 /**
+ * @export
  * @function
  * @param {express.Request} req
  * @param {express.Response} res
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-export async function create(req: Request, res: Response, next: NextFunction) {
+export async function create(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
     try {
-        const { error } = UserValidation.create(req.body);
+        const { error }: Joi.ValidationResult = UserValidation.create(req.body);
 
         if (error) {
-            throw new ValidationError(error.details);
+            throw new ValidationError(error.details[0].message);
         }
 
-        const user = await UserService.create(req.body);
+        const user: IUserModel = await UserService.create(req.body);
 
-        req.flash('sucsess', {
-            method: 'post',
-            id: user.id,
-            name: user.fullName,
-        });
+        req.flash(
+            'sucsess',
+            `New user ${user.fullname} was created (with _id = ${user.id})!`,
+        );
 
-        return res.redirect('/v1/users');
+        res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             req.flash('error', error.message);
@@ -136,11 +149,12 @@ export async function create(req: Request, res: Response, next: NextFunction) {
             return res.redirect('/v1/users');
         }
         if (error.name === 'MongoError') {
-            req.flash('error', { name: error.name, message: error.errmsg });
+            req.flash('error', `${error.name}: ${error.errmsg}`);
+            res.redirect('/v1/users');
 
-            return res.redirect('/v1/users');
+            return;
         }
-        req.flash('error', { name: error.name, message: error.message });
+        req.flash('error', `${error.name}: ${error.message}`);
         res.redirect('/v1/users');
 
         next(error);
@@ -148,6 +162,7 @@ export async function create(req: Request, res: Response, next: NextFunction) {
 }
 
 /**
+ * @export
  * @function
  * @param {express.Request} req
  * @param {express.Response} res
@@ -158,29 +173,36 @@ export async function updateById(
     req: Request,
     res: Response,
     next: NextFunction,
-) {
+): Promise<void> {
     try {
-        const { error } = UserValidation.updateById(req.body);
+        const { error }: Joi.ValidationResult = UserValidation.updateById(
+            req.body,
+        );
 
         if (error) {
-            throw new ValidationError(error.details);
+            throw new ValidationError(error.details[0].message);
         }
 
-        const user = await UserService.updateById(req.body.id, req.body);
+        const user: IUserModel = await UserService.updateById(
+            req.body.id,
+            req.body,
+        );
 
-        req.flash('sucsess', {
-            method: 'put',
-            id: user.id,
-            name: user.fullName,
-        });
-        return res.redirect('/v1/users');
+        req.flash(
+            'sucsess',
+            `User ${user.fullname} (with _id = ${user.id}) has been
+        updated successfully!`,
+        );
+        res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             req.flash('error', error.message);
-            return res.redirect('/v1/users');
+            res.redirect('/v1/users');
+
+            return;
         }
 
-        req.flash('error', { name: error.name, message: error.message });
+        req.flash('error', `${error.name}: ${error.message}`);
         res.redirect('/v1/users');
 
         next(error);
@@ -188,6 +210,7 @@ export async function updateById(
 }
 
 /**
+ * @export
  * @function
  * @param {express.Request} req
  * @param {express.Response} res
@@ -198,44 +221,40 @@ export async function deleteById(
     req: Request,
     res: Response,
     next: NextFunction,
-) {
+): Promise<void> {
     try {
-        const { error } = UserValidation.deleteById(req.body);
+        const { error }: Joi.ValidationResult = UserValidation.deleteById(
+            req.body,
+        );
 
         if (error) {
-            throw new ValidationError(error.details);
+            throw new ValidationError(error.details[0].message);
         }
 
-        const user = await UserService.deleteById(req.body.id);
+        const user: IUserModel = await UserService.deleteById(req.body.id);
 
-        req.flash('sucsess', {
-            method: 'delete',
-            id: user.id,
-            name: user.fullName,
-        });
+        req.flash(
+            'sucsess',
+            `New user ${user.fullname} was created (with _id = ${user.id})!`,
+        );
+        req.flash(
+            'sucsess',
+            `User ${user.fullname} (with _id = ${user.id}) has been
+        deleted successfully!`,
+        );
 
-        return res.redirect('/v1/users');
+        res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
-            return res.status(422).render('errors/validError.ejs', {
+            res.status(422).render('errors/validError.ejs', {
                 method: 'delete',
                 name: error.name,
-                message: error.message[0].message,
+                message: error.message,
             });
         }
-
-        req.flash('error', { name: error.name, message: error.message });
+        req.flash('error', `${error.name}: ${error.message}`);
         res.redirect('/v1/users');
 
         next(error);
     }
 }
-
-// export default {
-//     findAll,
-//     getStatistic,
-//     findById,
-//     create,
-//     updateById,
-//     deleteById,
-// };
