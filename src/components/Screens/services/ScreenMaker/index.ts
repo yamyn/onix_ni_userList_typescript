@@ -1,9 +1,9 @@
-const createScreenName = require('./createScreenName');
-const makeScreen = require('./browser');
-const postImage = require('./googleDrive/googleDriveUpload');
+import { createScreenName } from './createScreenName';
+import { makeScreen } from './browser';
+import imageService from './dropbox';
 
-module.exports = {
+export default {
     createScreenName,
     makeScreen,
-    postImage,
+    imageService,
 };

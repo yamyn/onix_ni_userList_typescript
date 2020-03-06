@@ -1,13 +1,12 @@
-const moment = require('moment');
+import * as moment from 'moment';
 
 /**
+ * @export
  * @function
  * @returns {string} screenName - to use current date as name for screen
  */
-function getScreenName() {
+export function createScreenName(): string {
     return moment()
         .utc()
         .format('YYYY-MM-DD__HH:mm');
 }
-
-module.exports = getScreenName;

@@ -12,9 +12,9 @@ export interface IScreensService {
     findAll(): Promise<IScreensModel[]>;
 
     /**
-     * @param {IUserModel} IUserModel
-     * @returns {Promise<IUserModel>}
-     * @memberof IUserService
+     * @param {IScreensModel} IScreensModel
+     * @returns {Promise<IScreensModel>}
+     * @memberof IScreensService
      */
     create(IScreensModel: IScreensModel): Promise<IScreensModel>;
 }
