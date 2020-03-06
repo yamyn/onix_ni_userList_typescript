@@ -1,7 +1,11 @@
-const { Schema } = require('mongoose');
-const connections = require('../../config/connection');
+import { Document, Schema } from 'mongoose';
+import * as connections from '../../config/connection';
 
-const EmailsListSchema = new Schema(
+export interface IEmailListModel extends Document {
+    email: string[];
+}
+
+const EmailsListSchema: Schema = new Schema(
     {
         emails: {
             type: Array,
@@ -10,11 +14,12 @@ const EmailsListSchema = new Schema(
     },
     {
         timestamps: true,
-    },
-    {
-        collection: 'emailList',
+        collection: 'emaillists',
         versionKey: false,
     },
 );
 
-module.exports = connections.model('EmailList', EmailsListSchema);
+export default connections.db.model<IEmailListModel>(
+    'EmailListModel',
+    EmailsListSchema,
+);

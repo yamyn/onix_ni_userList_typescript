@@ -1,15 +1,22 @@
-const EmailsListService = require('./service');
+import EmailsListService from './service';
+import { IEmailListModel } from './model';
+import { NextFunction, Request, Response } from 'express';
 
 /**
+ * @export
  * @function
  * @param {express.Request} req
  * @param {express.Response} res
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-async function findAll(req, res, next) {
+export async function findAll(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
     try {
-        const emails = await EmailsListService.findAll();
+        const emails: IEmailListModel[] = await EmailsListService.findAll();
 
         res.status(200).json({ emails });
     } catch (error) {
@@ -20,13 +27,18 @@ async function findAll(req, res, next) {
 }
 
 /**
+ * @export
  * @function
  * @param {express.Request} req
  * @param {express.Response} res
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-async function create(req, res, next) {
+export async function create(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
     try {
         EmailsListService.create(req.body);
         res.status(200).json({ message: 'emails was saved' });
@@ -36,8 +48,3 @@ async function create(req, res, next) {
         next(error);
     }
 }
-
-module.exports = {
-    findAll,
-    create,
-};

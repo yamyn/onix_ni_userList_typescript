@@ -1,7 +1,7 @@
-const { Router } = require('express');
-const EmailListComponent = require('../EmailsList');
+import { Router } from 'express';
+import * as EmailListComponent from '../EmailsList';
 
-const router = Router();
+const router: Router = Router();
 
 /**
  * Route serving list of emails.
@@ -23,4 +23,4 @@ router.get('/', EmailListComponent.findAll);
  */
 router.post('/', EmailListComponent.create);
 
-module.exports = router;
+export default router;

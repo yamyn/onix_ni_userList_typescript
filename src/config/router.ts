@@ -1,7 +1,7 @@
 import * as express from 'express';
 import * as http from 'http';
 import UserRouter from '../components/User/router';
-// import EmailListRouter from '../components/EmailsList/router';
+import EmailListRouter from '../components/EmailsList/router';
 // import ScreensRouter from '../components/Screens/router';
 
 /**
@@ -31,7 +31,7 @@ export function init(app: express.Application): void {
      * @param {string} path - Express path
      * @param {callback} middleware - Express middleware.
      */
-    // app.use('/v1/emails', EmailListRouter);
+    app.use('/v1/emails', EmailListRouter);
 
     /**
      * Forwards any requests to the /v1/screens URI to ScreensRouter.

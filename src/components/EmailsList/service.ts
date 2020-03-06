@@ -1,28 +1,27 @@
-const EmailsListModel = require('./model');
+import EmailsListModel, { IEmailListModel } from './model';
+import { IEmailListService } from './Interface';
 
 /**
- * @exports
- * @method findAll
- * @param {}
- * @summary get list of all document-emails
- * @returns Promise<EmailsListModel[]>
+ * @export
+ * @implements {IEmailListModelService}
  */
-function findAll() {
-    return EmailsListModel.find({}).exec();
-}
 
-/**
- * @exports
- * @method create
- * @param {Object} emailList
- * @summary create a new emailList
- * @returns {Promise<EmailsListModel>}
- */
-function create(emailList) {
-    return EmailsListModel.create(emailList);
-}
+const EmailListService: IEmailListService = {
+    /**
+     * @returns {Promise < IEmailListModel[] >}
+     * @memberof EmailListService
+     */
+    findAll(): Promise<IEmailListModel[]> {
+        return EmailsListModel.find({}).exec();
+    },
 
-module.exports = {
-    findAll,
-    create,
+    /**
+     * @returns {Promise < IEmailListModel >}
+     * @memberof EmailListService
+     */
+    create(emailList: IEmailListModel): Promise<IEmailListModel> {
+        return EmailsListModel.create(emailList);
+    },
 };
+
+export default EmailListService;
