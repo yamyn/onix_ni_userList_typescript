@@ -6,7 +6,7 @@
         "build": "tsc --skipLibCheck",
         "start": "tsc --skipLibCheck && node ./build/config/server/index.js",
         "ts:watch": "tsc -w",
-        "screen": "node src/components/Screens/services/toMakeScreen.js"
+        "screen": "tsc --skipLibCheck && node src/components/Screens/services/toMakeScreen.js"
     },
     "dependencies": {
         "@hapi/joi": "17.1.0",

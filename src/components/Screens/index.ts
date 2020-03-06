@@ -1,4 +1,6 @@
-const ScreenListService = require('./services/dBService');
+import ScreenListService from './services/dBService';
+import { NextFunction, Request, Response } from 'express';
+import { IScreensModel } from './model';
 /**
  * @function
  * @param {express.Request} req
@@ -6,9 +8,13 @@ const ScreenListService = require('./services/dBService');
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-async function findAll(req, res, next) {
+export async function findAll(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
     try {
-        const screens = await ScreenListService.findAll();
+        const screens: IScreensModel[] = await ScreenListService.findAll();
 
         res.status(200).json({ screens });
     } catch (error) {
@@ -17,7 +23,3 @@ async function findAll(req, res, next) {
         next(error);
     }
 }
-
-module.exports = {
-    findAll,
-};

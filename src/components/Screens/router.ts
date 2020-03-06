@@ -1,7 +1,7 @@
-const { Router } = require('express');
-const ScreensComponent = require('../Screens');
+import { Router } from 'express';
+import * as ScreensComponent from '../Screens';
 
-const router = Router();
+const router: Router = Router();
 
 /**
  * Route serving list of screenLinks.
@@ -13,4 +13,4 @@ const router = Router();
  */
 router.get('/', ScreensComponent.findAll);
 
-module.exports = router;
+export default router;

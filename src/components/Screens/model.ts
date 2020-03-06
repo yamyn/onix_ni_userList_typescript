@@ -1,7 +1,11 @@
-const { Schema } = require('mongoose');
-const connections = require('../../config/connection');
+import { Document, Schema } from 'mongoose';
+import * as connections from '../../config/connection';
 
-const ScreensSchema = new Schema(
+export interface IScreensModel extends Document {
+    screenLink: string;
+}
+
+const ScreensSchema: Schema = new Schema(
     {
         screenLink: {
             type: String,
@@ -10,11 +14,9 @@ const ScreensSchema = new Schema(
     },
     {
         timestamps: true,
-    },
-    {
         collection: 'screens',
         versionKey: false,
     },
 );
 
-module.exports = connections.model('Screens', ScreensSchema);
+export default connections.db.model<IScreensModel>('Screens', ScreensSchema);

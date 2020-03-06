@@ -2,7 +2,7 @@ import * as express from 'express';
 import * as http from 'http';
 import UserRouter from '../components/User/router';
 import EmailListRouter from '../components/EmailsList/router';
-// import ScreensRouter from '../components/Screens/router';
+import ScreensRouter from '../components/Screens/router';
 
 /**
  * @function
@@ -41,7 +41,7 @@ export function init(app: express.Application): void {
      * @param {string} path - Express path
      * @param {callback} middleware - Express middleware.
      */
-    // app.use('/v1/screens', ScreensRouter);
+    app.use('/v1/screens', ScreensRouter);
 
     /**
      * @description No results returned mean the object is not found
