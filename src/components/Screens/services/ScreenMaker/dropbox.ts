@@ -1,10 +1,10 @@
 import { Dropbox } from 'dropbox';
 import * as fetch from 'isomorphic-fetch';
+import config from '../../../../config/env';
 
 const dropbox: Dropbox = new Dropbox({
     fetch,
-    accessToken:
-        'MNnmrb80hFAAAAAAAAAAQNJn_X5D43kXkIR9fg8XM5qc8zt2BFqo76RMpDXPPIrM',
+    accessToken: `${config.dropboxToken}`,
 });
 
 /**
