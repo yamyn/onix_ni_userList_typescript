@@ -21,7 +21,6 @@
         "dotenv": "8.2.0",
         "dropbox": "4.0.30",
         "ejs": "3.0.1",
-        "es6-promise": "^4.2.8",
         "eslint-config-airbnb": "18.0.1",
         "express": "4.16.2",
         "express-session": "1.17.0",

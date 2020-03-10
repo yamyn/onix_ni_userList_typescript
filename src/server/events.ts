@@ -47,14 +47,3 @@ export function onListening(): void {
     // tslint:disable-next-line: no-console
     console.log(`Listening on ${bindPort}`);
 }
-
-/**
- * @function
- * @inner
- * @param {http.Server} Server
- * @param {number} port
- */
-// function bind(Server, port) {
-//     Server.on('error', error => this.onError(error, port));
-//     Server.on('listening', this.onListening.bind(Server));
-// }
