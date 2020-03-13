@@ -1,76 +1,74 @@
-import * as Joi from 'joi';
-import AuthValidation from './validation';
-import UserModel, { IUserModel } from '../User/model';
-import { IAuthService } from './interface';
+import AdminModel, { IAdminModel } from './model';
+import { IAdminService } from './Interface';
+import { Types, QueryUpdateOptions } from 'mongoose';
 
 /**
  * @export
- * @implements {IAuthService}
+ * @implements {IUserModelService}
  */
-const AuthService: IAuthService = {
 
+const AdminService: IAdminService = {
     /**
-     * @param {IUserModel} body
-     * @returns {Promise <IUserModel>}
-     * @memberof AuthService
+     * @returns {Promise < IAdminModel[] >}
+     * @memberof AdminService
      */
-    async createUser(body: IUserModel): Promise < IUserModel > {
-        try {
-            const validate: Joi.ValidationResult < IUserModel > = AuthValidation.createUser(body);
-
-            if (validate.error) {
-                throw new Error(validate.error.message);
-            }
-
-            const user: IUserModel = new UserModel({
-                email: body.email,
-                password: body.password
-            });
-
-            const query: IUserModel = await UserModel.findOne({
-                email: body.email
-            });
-
-            if (query) {
-                throw new Error('This email already exists');
-            }
-
-            const saved: IUserModel = await user.save();
-
-            return saved;
-        } catch (error) {
-            throw new Error(error);
-        }
+    findAll(): Promise<IAdminModel[]> {
+        return AdminModel.find({}).exec();
     },
+
     /**
-     * @param {IUserModel} body 
-     * @returns {Promise <IUserModel>}
-     * @memberof AuthService
+     * @param {string} id
+     * @summary get a admin
+     * @returns {Promise<IAdminModel>}
+     * @memberof AdminService
      */
-    async getUser(body: IUserModel): Promise < IUserModel > {
-        try {
-            const validate: Joi.ValidationResult < IUserModel > = AuthValidation.getUser(body);
+    findOne(code: string): Promise<IAdminModel> {
+        return AdminModel.findOne(code).exec();
+    },
 
-            if (validate.error) {
-                throw new Error(validate.error.message);
-            }
+    /**
+     * @method create
+     * @param {IAdminModel} profile
+     * @summary create a new admin
+     * @returns {Promise<IAdminModel>}
+     * @memberof AdminService
+     */
+    create(profile: IAdminModel): Promise<IAdminModel> {
+        return AdminModel.create(profile);
+    },
 
-            const user: IUserModel = await UserModel.findOne({
-                email: body.email
-            });
-        
-            const isMatched: boolean = user && await user.comparePassword(body.password);
- 
-            if (isMatched) {
-                return user;
-            }
+    /**
+     * Find a admin by id and update his profile
+     * @method updateById
+     * @param {string} id
+     * @param {IAdminModel} newProfile
+     * @summary update a admin's profile
+     * @returns {Promise<IAdminModel>}
+     * @memberof AdminService
+     */
+    updateById(id: string, newProfile: IAdminModel): Promise<IAdminModel> {
+        const updateOptions: QueryUpdateOptions = {
+            new: true,
+            useFindAndModify: false,
+        };
 
-            throw new Error('Invalid password or email');
-            
-        } catch (error) {
-            throw new Error(error);
-        }
-    }
+        return AdminModel.findByIdAndUpdate(
+            { _id: Types.ObjectId(id) },
+            newProfile,
+            updateOptions,
+        ).exec();
+    },
+
+    /**
+     * @method deleteById
+     * @param {string} id
+     * @summary delete a admin from database
+     * @returns {Promise<IAdminModel>}
+     * @memberof AdminService
+     */
+    deleteById(id: string): Promise<IAdminModel> {
+        return AdminModel.findByIdAndDelete({ _id: Types.ObjectId(id) }).exec();
+    },
 };
 
-export default AuthService;
+export default AdminService;

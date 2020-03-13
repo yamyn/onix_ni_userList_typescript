@@ -1,55 +1,74 @@
-import * as Joi from 'joi';
 import Validation from '../validation';
-import { IUserModel } from '../User/model';
+import * as Joi from '@hapi/joi';
+import { IUserModel } from './model';
 
 /**
  * @export
- * @class AuthValidation
+ * @class UserValidation
  * @extends Validation
  */
-class AuthValidation extends Validation {
-
-     /**
-     * Creates an instance of AuthValidation.
-     * @memberof AuthValidation
+class UserValidation extends Validation {
+    /**
+     * Creates an instance of UserValidation.
+     * @memberof UserValidation
      */
     constructor() {
         super();
     }
+
     /**
-     * @param {IUserModel} params
-     * @returns {Joi.ValidationResult<IUserModel >}
+     * @param {{ id: string }} body
+     * @returns {Joi.ValidationResult}
      * @memberof UserValidation
      */
-    createUser(
-        params: IUserModel
-    ): Joi.ValidationResult < IUserModel > {
-        const schema: Joi.Schema = Joi.object().keys({
-            password: Joi.string().required(),
-            email: Joi.string().email({
-                minDomainAtoms: 2
-            }).required()
-        });
-
-        return Joi.validate(params, schema);
+    findOne(body: { id: string }): Joi.ValidationResult {
+        return this.Joi.object({
+            id: this.Joi.objectId(),
+        }).validate(body);
     }
+
     /**
      * @param {IUserModel} params
-     * @returns {Joi.ValidationResult<IUserModel >}
+     * @returns {Joi.ValidationResult}
      * @memberof UserValidation
      */
-    getUser(
-        params: IUserModel
-    ): Joi.ValidationResult < IUserModel > {
-        const schema: Joi.Schema = Joi.object().keys({
-            password: Joi.string().required(),
-            email: Joi.string().email({
-                minDomainAtoms: 2
-            }).required()
+    create(profile: IUserModel): Joi.ValidationResult {
+        return this.Joi.object({
+            email: this.Joi.string().email(),
+            fullName: this.Joi.string()
+                .min(3)
+                .max(30)
+                .required(),
+        }).validate(profile, {
+            allowUnknown: true,
         });
+    }
 
-        return Joi.validate(params, schema);
-    } 
+    /**
+     * @param {{ id: string }} body
+     * @returns {Joi.ValidationResult}
+     * @memberof UserValidation
+     */
+    updateById(body: { id: string }): Joi.ValidationResult {
+        return this.Joi.object({
+            id: this.Joi.objectId(),
+            fullName: this.Joi.string()
+                .min(3)
+                .max(30)
+                .required(),
+        }).validate(body, { allowUnknown: true });
+    }
+
+    /**
+     * @param {{ id: string }} body
+     * @returns {Joi.ValidationResult}
+     * @memberof UserValidation
+     */
+    deleteById(body: { id: string }): Joi.ValidationResult {
+        return this.Joi.object({
+            id: this.Joi.objectId(),
+        }).validate(body, { allowUnknown: true });
+    }
 }
 
-export default new AuthValidation();
+export default new UserValidation();
