@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import * as UserComponent from '../User';
+import * as AuthComponent from '../Auth';
 
 /**
  * Express router to mount user related functions on.
@@ -16,26 +16,26 @@ const router: Router = Router();
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-router.get('/', UserComponent.findAll);
+router.get('/', AuthComponent.findAll);
 
 /**
- * Route serving a users statictic
+ * Route serving a creating admin
  * @name /v1/users
  * @function
  * @inner
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-router.get('/statistic', UserComponent.getStatistic);
+router.get('/signup', AuthComponent.signupPage);
 /**
- * Route serving a user
- * @name /v1/users/:id
+ * Route serving a creating admin
+ * @name /v1/users/
  * @function
  * @inner
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-// router.get('/:id', UserComponent.findById);
+router.post('/signup', AuthComponent.signup);
 
 /**
  * Route serving a new user
@@ -45,7 +45,7 @@ router.get('/statistic', UserComponent.getStatistic);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.post('/', UserComponent.create);
+// router.post('/', AuthComponent.create);
 
 /**
  * Route serving updating user
@@ -55,7 +55,7 @@ router.post('/', UserComponent.create);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware
  */
-router.put('/', UserComponent.updateById);
+router.put('/', AuthComponent.updateById);
 
 /**
  * Route serving a removing user
@@ -65,7 +65,7 @@ router.put('/', UserComponent.updateById);
  * @param {string} path -Express path
  * @param {callback} middleware - Express middleware
  */
-router.delete('/', UserComponent.deleteById);
+router.delete('/', AuthComponent.deleteById);
 
 /**
  * @export {express.Router}

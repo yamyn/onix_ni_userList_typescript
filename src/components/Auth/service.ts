@@ -36,6 +36,26 @@ const AdminService: IAdminService = {
     create(profile: IAdminModel): Promise<IAdminModel> {
         return AdminModel.create(profile);
     },
+    /**
+     * Find a admin by id and update his profile
+     * @method updateRefresh
+     * @param {string} id
+     * @param {string} refreshToken
+     * @summary update a admin's profile
+     * @returns {Promise<IAdminModel>}
+     * @memberof AdminService
+     */
+    updateRefresh(id: string, refreshToken: string): Promise<IAdminModel> {
+        const updateOptions: QueryUpdateOptions = {
+            useFindAndModify: false,
+        };
+
+        return AdminModel.findByIdAndUpdate(
+            { _id: Types.ObjectId(id) },
+            { refreshToken },
+            updateOptions,
+        ).exec();
+    },
 
     /**
      * Find a admin by id and update his profile

@@ -235,10 +235,6 @@ export async function deleteById(
 
         req.flash(
             'sucsess',
-            `New user ${user.fullname} was created (with _id = ${user.id})!`,
-        );
-        req.flash(
-            'sucsess',
             `User ${user.fullname} (with _id = ${user.id}) has been
         deleted successfully!`,
         );
@@ -246,12 +242,12 @@ export async function deleteById(
         res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
-            res.status(422).render('errors/validError.ejs', {
-                method: 'delete',
-                name: error.name,
-                message: error.message,
-            });
+            req.flash('error', error.message);
+            res.redirect('/v1/users');
+
+            return;
         }
+
         req.flash('error', `${error.name}: ${error.message}`);
         res.redirect('/v1/users');
 

@@ -1,9 +1,9 @@
 import * as jwt from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
-import app from '../../server/server';
+import app from '../server/server';
 
 interface RequestWithUser extends Request {
-    user: object | string;
+    admin: object | string;
 }
 
 /**
@@ -22,9 +22,10 @@ export function isAuthenticated(
 
     if (token) {
         try {
-            const user: object | string = jwt.verify(token, app.get('secret'));
+            const admin: object | string = jwt.verify(token, app.get('secret'));
 
-            req.user = user;
+            req.admin = admin;
+            console.log(admin);
 
             return next();
         } catch (error) {

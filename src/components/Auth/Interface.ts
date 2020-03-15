@@ -30,6 +30,13 @@ export interface IAdminService {
      * @returns {Promise<IAdminModel>}
      * @memberof IUserService
      */
+    updateRefresh(id: string, refreshToken: string): Promise<IAdminModel>;
+
+    /**
+     * @param {IAdminModel} IAdminModel
+     * @returns {Promise<IAdminModel>}
+     * @memberof IUserService
+     */
     updateById(id: string, IAdminModel: IAdminModel): Promise<IAdminModel>;
 
     /**

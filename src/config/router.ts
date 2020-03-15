@@ -3,7 +3,8 @@ import * as http from 'http';
 import UserRouter from '../components/User/router';
 import EmailListRouter from '../components/EmailsList/router';
 import ScreensRouter from '../components/Screens/router';
-import * as jwtConfig from '../config/middleware/jwtAuth';
+import AuthRouter from '../components/Auth/router';
+import * as jwtConfig from '../police/jwtAuth';
 
 /**
  * @function
@@ -13,6 +14,16 @@ import * as jwtConfig from '../config/middleware/jwtAuth';
  */
 export function init(app: express.Application): void {
     const router: express.Router = express.Router();
+
+    /**
+     * Forwards any requests to the /v1/users URI to UserRouter.
+     * @name /v1/auth
+     * @function
+     * @inner
+     * @param {string} path - Express path
+     * @param {callback} middleware - Express middleware.
+     */
+    app.use('/v1/auth', AuthRouter);
 
     /**
      * Forwards any requests to the /v1/users URI to UserRouter.

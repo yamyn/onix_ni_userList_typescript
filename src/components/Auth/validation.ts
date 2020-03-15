@@ -1,44 +1,45 @@
 import Validation from '../validation';
 import * as Joi from '@hapi/joi';
-import { IUserModel } from './model';
+import { IAdminModel } from './model';
 
 /**
  * @export
  * @class UserValidation
  * @extends Validation
  */
-class UserValidation extends Validation {
+class AdminValidation extends Validation {
     /**
-     * Creates an instance of UserValidation.
-     * @memberof UserValidation
+     * Creates an instance of AdminValidation.
+     * @memberof AdminValidation
      */
     constructor() {
         super();
     }
 
     /**
-     * @param {{ id: string }} body
+     * @param {{ email: string }} body
      * @returns {Joi.ValidationResult}
-     * @memberof UserValidation
+     * @memberof AdminValidation
      */
-    findOne(body: { id: string }): Joi.ValidationResult {
+    findOne(body: { email: string }): Joi.ValidationResult {
         return this.Joi.object({
-            id: this.Joi.objectId(),
+            email: this.Joi.string().email(),
         }).validate(body);
     }
 
     /**
      * @param {IUserModel} params
      * @returns {Joi.ValidationResult}
-     * @memberof UserValidation
+     * @memberof AdminValidation
      */
-    create(profile: IUserModel): Joi.ValidationResult {
+    create(profile: IAdminModel): Joi.ValidationResult {
         return this.Joi.object({
             email: this.Joi.string().email(),
+            nickName: this.Joi.string().required(),
             fullName: this.Joi.string()
                 .min(3)
-                .max(30)
-                .required(),
+                .max(30),
+            password: Joi.string().required(),
         }).validate(profile, {
             allowUnknown: true,
         });
@@ -47,7 +48,7 @@ class UserValidation extends Validation {
     /**
      * @param {{ id: string }} body
      * @returns {Joi.ValidationResult}
-     * @memberof UserValidation
+     * @memberof AdminValidation
      */
     updateById(body: { id: string }): Joi.ValidationResult {
         return this.Joi.object({
@@ -62,7 +63,7 @@ class UserValidation extends Validation {
     /**
      * @param {{ id: string }} body
      * @returns {Joi.ValidationResult}
-     * @memberof UserValidation
+     * @memberof AdminValidation
      */
     deleteById(body: { id: string }): Joi.ValidationResult {
         return this.Joi.object({
@@ -71,4 +72,4 @@ class UserValidation extends Validation {
     }
 }
 
-export default new UserValidation();
+export default new AdminValidation();
