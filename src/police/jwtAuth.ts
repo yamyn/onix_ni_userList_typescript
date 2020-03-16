@@ -18,21 +18,20 @@ export function isAuthenticated(
     res: Response,
     next: NextFunction,
 ): void {
-    const token: any = req.headers['x-access-token'];
+    const token: any = req.headers['x-access-token'] || req.body.xatoken;
 
     if (token) {
         try {
             const admin: object | string = jwt.verify(token, app.get('secret'));
 
             req.admin = admin;
-            console.log(admin);
 
             return next();
         } catch (error) {
             res.status(401).json({ message: 'Invalid token!' });
         }
     }
-    res.status(401).json({ message: 'x-access-token is missing!' });
+    res.status(301).redirect('/v1/auth/signup');
 
     return;
 }

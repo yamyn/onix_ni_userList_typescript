@@ -150,16 +150,16 @@
         console.log(csrfToken, accesToken, refreshToken);
         const url = "http://localhost:3030/v1/users";
         const options = {
+        credentials: 'same-origin',
         headers: {
-        "CSRF-Token": csrfToken,
+        "Content-Type": "text/html",
         "x-access-token": accesToken
             },
         };
         fetch(url, options).then(res => {
-        res.redirected = true
-        console.log(res)
+          return res.text()
         }
-        );
+        ).then(page => document.write(page))
     </script>
   </body>
 </html>
