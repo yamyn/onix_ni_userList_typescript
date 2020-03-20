@@ -26,6 +26,25 @@ router.get('/', AuthComponent.findAll);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
+router.get('/login', AuthComponent.loginPage);
+/**
+ * Route serving a creating admin
+ * @name /v1/users/
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+router.post('/login', AuthComponent.login);
+
+/**
+ * Route serving a creating admin
+ * @name /v1/users
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
 router.get('/signup', AuthComponent.signupPage);
 /**
  * Route serving a creating admin
@@ -36,6 +55,25 @@ router.get('/signup', AuthComponent.signupPage);
  * @param {callback} middleware - Express middleware.
  */
 router.post('/signup', AuthComponent.signup);
+
+/**
+ * Route serving a creating admin
+ * @name /v1/users
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+router.get('/getRefresh', AuthComponent.refreshPage);
+/**
+ * Route serving a creating admin
+ * @name /v1/users/
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+router.get('/refreshUp', AuthComponent.refreshUpdate);
 
 /**
  * Route serving a new user

@@ -4,7 +4,7 @@ import { IAdminModel } from './model';
 
 /**
  * @export
- * @class UserValidation
+ * @class AdminValidation
  * @extends Validation
  */
 class AdminValidation extends Validation {
@@ -17,11 +17,11 @@ class AdminValidation extends Validation {
     }
 
     /**
-     * @param {{ email: string }} body
+     * @param {{ nickName: string }} body
      * @returns {Joi.ValidationResult}
      * @memberof AdminValidation
      */
-    findOne(body: { email: string }): Joi.ValidationResult {
+    login(body: { email: string }): Joi.ValidationResult {
         return this.Joi.object({
             email: this.Joi.string().email(),
         }).validate(body);
@@ -32,7 +32,7 @@ class AdminValidation extends Validation {
      * @returns {Joi.ValidationResult}
      * @memberof AdminValidation
      */
-    create(profile: IAdminModel): Joi.ValidationResult {
+    signup(profile: IAdminModel): Joi.ValidationResult {
         return this.Joi.object({
             email: this.Joi.string().email(),
             nickName: this.Joi.string().required(),

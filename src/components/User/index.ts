@@ -20,8 +20,9 @@ export async function findAll(
     next: NextFunction,
 ): Promise<void> {
     try {
+        req.flash('token', null);
         const users: IUserModel[] = await UserService.findAll();
-        console.log('Users Find');
+
         res.status(200).render('index', {
             users,
             csrfToken: req.csrfToken(),
@@ -138,10 +139,9 @@ export async function create(
 
         req.flash(
             'sucsess',
-            `New user ${user.fullname} was created (with _id = ${user.id})!`,
+            `New user ${user.fullName} was created (with _id = ${user.id})!`,
         );
-
-        req.headers['x-access-token'] = req.body.xatoken;
+        req.flash('token', req.body.xatoken);
 
         res.redirect('/v1/users');
     } catch (error) {
@@ -192,10 +192,11 @@ export async function updateById(
 
         req.flash(
             'sucsess',
-            `User ${user.fullname} (with _id = ${user.id}) has been
+            `User ${user.fullName} (with _id = ${user.id}) has been
         updated successfully!`,
         );
-        req.headers['x-access-token'] = req.body.xatoken;
+        req.flash('token', req.body.xatoken);
+
         res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
@@ -238,12 +239,11 @@ export async function deleteById(
 
         req.flash(
             'sucsess',
-            `User ${user.fullname} (with _id = ${user.id}) has been
+            `User ${user.fullName} (with _id = ${user.id}) has been
         deleted successfully!`,
         );
-        console.log('xatoken :', req.body.xatoken);
-        req.headers['x-access-token'] = req.body.xatoken;
-        console.log('x-access-token :', req.headers['x-access-token']);
+        req.flash('token', req.body.xatoken);
+
         res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {

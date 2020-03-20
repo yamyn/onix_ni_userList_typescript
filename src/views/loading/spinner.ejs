@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="csrf-token" content="<%=csrfToken %>">
-    <meta name="x-access-token" content="<%=accesToken %>">
-    <meta name="refresh-token" content="<%=refreshToken %>">
+    <% if (typeof tokens !== 'undefined') { %> 
+    <meta name="x-access-token" content="<%=tokens.accesToken %>">
+    <meta name="refresh-token" content="<%=tokens.refreshToken %>">
+            <% } %> 
     <title>Loading...</title>
     <style>
       /* Absolute Center Spinner */
@@ -139,27 +140,6 @@
   </head>
   <body>
     <div class="loading">Loading&#8230;</div>
-    <script>
-
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const accesToken = document.querySelector('meta[name="x-access-token"]').getAttribute('content');
-        const refreshToken = document.querySelector('meta[name="refresh-token"]').getAttribute('content');
-
-        localStorage.setItem("x-access-token", accesToken);
-        localStorage.setItem("refresh-token", refreshToken);
-        console.log(csrfToken, accesToken, refreshToken);
-        const url = "http://localhost:3030/v1/users";
-        const options = {
-        credentials: 'same-origin',
-        headers: {
-        "Content-Type": "text/html",
-        "x-access-token": accesToken
-            },
-        };
-        fetch(url, options).then(res => {
-          return res.text()
-        }
-        ).then(page => document.write(page))
-    </script>
+    <%- include(script) %>
   </body>
 </html>

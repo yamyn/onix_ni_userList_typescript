@@ -1,4 +1,4 @@
-import { IAdminModel } from './model';
+import { IAdminModel } from '../model';
 
 /**
  * @export
@@ -12,11 +12,11 @@ export interface IAdminService {
     findAll(): Promise<IAdminModel[]>;
 
     /**
-     * @param {string} code
+     * @param {string} email
      * @returns {Promise<IAdminModel>}
      * @memberof IAdminService
      */
-    findOne(code: string): Promise<IAdminModel>;
+    findOne(email: string): Promise<IAdminModel>;
 
     /**
      * @param {IAdminModel} IAdminModel

@@ -1,4 +1,4 @@
-import AdminModel, { IAdminModel } from './model';
+import AdminModel, { IAdminModel } from '../model';
 import { IAdminService } from './Interface';
 import { Types, QueryUpdateOptions } from 'mongoose';
 
@@ -17,13 +17,13 @@ const AdminService: IAdminService = {
     },
 
     /**
-     * @param {string} id
-     * @summary get a admin
+     * @param {string} email
+     * @summary get an admin
      * @returns {Promise<IAdminModel>}
      * @memberof AdminService
      */
-    findOne(code: string): Promise<IAdminModel> {
-        return AdminModel.findOne(code).exec();
+    findOne(email: string): Promise<IAdminModel> {
+        return AdminModel.findOne({ email }).exec();
     },
 
     /**
@@ -37,11 +37,11 @@ const AdminService: IAdminService = {
         return AdminModel.create(profile);
     },
     /**
-     * Find a admin by id and update his profile
+     * Find an admin by id and update his profile
      * @method updateRefresh
      * @param {string} id
      * @param {string} refreshToken
-     * @summary update a admin's profile
+     * @summary update an admin's profile
      * @returns {Promise<IAdminModel>}
      * @memberof AdminService
      */
@@ -58,11 +58,11 @@ const AdminService: IAdminService = {
     },
 
     /**
-     * Find a admin by id and update his profile
+     * Find an admin by id and update his profile
      * @method updateById
      * @param {string} id
      * @param {IAdminModel} newProfile
-     * @summary update a admin's profile
+     * @summary update an admin's profile
      * @returns {Promise<IAdminModel>}
      * @memberof AdminService
      */
@@ -82,7 +82,7 @@ const AdminService: IAdminService = {
     /**
      * @method deleteById
      * @param {string} id
-     * @summary delete a admin from database
+     * @summary delete an admin from database
      * @returns {Promise<IAdminModel>}
      * @memberof AdminService
      */

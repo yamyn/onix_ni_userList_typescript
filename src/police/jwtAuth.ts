@@ -18,20 +18,26 @@ export function isAuthenticated(
     res: Response,
     next: NextFunction,
 ): void {
-    const token: any = req.headers['x-access-token'] || req.body.xatoken;
+    const authFromFlash: string = req.flash('token')[0];
+
+    const token: any =
+        req.headers['x-access-token'] || req.body.xatoken || authFromFlash;
 
     if (token) {
         try {
             const admin: object | string = jwt.verify(token, app.get('secret'));
-
+            console.log(admin);
             req.admin = admin;
 
             return next();
         } catch (error) {
-            res.status(401).json({ message: 'Invalid token!' });
+            res.redirect('/v1/auth/getRefresh');
+
+            return;
         }
     }
-    res.status(301).redirect('/v1/auth/signup');
+
+    res.status(301).redirect('/v1/auth/login');
 
     return;
 }

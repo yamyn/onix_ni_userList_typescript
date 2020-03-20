@@ -10,6 +10,7 @@ export interface IAdminModel extends Document {
     fullName: string;
     refreshToken: string;
     comparePassword: (password: string) => Promise<boolean>;
+    compareRefresh: (token: string) => boolean;
 }
 
 const AdminSchema: Schema = new Schema(
@@ -33,7 +34,10 @@ const AdminSchema: Schema = new Schema(
             type: String,
             trim: true,
         },
-        refreshToken: String,
+        refreshToken: {
+            type: String,
+            default: null,
+        },
     },
 
     {
@@ -76,6 +80,13 @@ AdminSchema.methods.comparePassword = async function(
     } catch (error) {
         return error;
     }
+};
+
+/**
+ * Method for comparing refreshToken
+ */
+AdminSchema.methods.compareRefresh = function(token: string): boolean {
+    return token === this.refreshToken;
 };
 
 export default connections.db.model<IAdminModel>('Admin', AdminSchema);

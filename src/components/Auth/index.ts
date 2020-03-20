@@ -1,11 +1,15 @@
-import AdminService from './service';
+import AdminService from './services/service';
 import adminValidation from './validation';
 import ValidationError from '../../error/ValidationError';
 import { NextFunction, Request, Response } from 'express';
 import { IAdminModel } from './model';
 import Joi = require('@hapi/joi');
-import * as jwt from 'jsonwebtoken';
-import app from '../../server/server';
+import {
+    ITokens,
+    ITokenInfo,
+    generateTokens,
+    checkRefresh,
+} from './services/getTokens';
 
 /**
  * @export
@@ -39,6 +43,34 @@ export async function findAll(
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
+export async function loginPage(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+        res.status(200).render('auth/index', {
+            csrfToken: req.csrfToken(),
+            template: 'login.ejs',
+            errors: req.flash('error'),
+            successes: req.flash('sucsess'),
+        });
+    } catch (error) {
+        req.flash('error', `${error.name}: ${error.message}`);
+        res.redirect('/v1/auth/login');
+
+        next(error);
+    }
+}
+
+/**
+ * @export
+ * @function
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Promise < void >}
+ */
 
 export async function login(
     req: Request,
@@ -46,38 +78,49 @@ export async function login(
     next: NextFunction,
 ): Promise<void> {
     try {
-        const { error }: Joi.ValidationResult = adminValidation.findOne({
-            email: req.params.email,
+        const { error }: Joi.ValidationResult = adminValidation.login({
+            email: req.body.email,
         });
 
         if (error) {
             throw new ValidationError(error.details[0].message);
         }
 
-        const admin: IAdminModel = await AdminService.findOne(req.params.email);
+        const admin: IAdminModel = await AdminService.findOne(req.body.email);
 
-        res.status(200).json({
-            data: admin,
+        const isMatched: boolean =
+            admin && (await admin.comparePassword(req.body.password));
+
+        if (!isMatched) {
+            throw new ValidationError('Pasword is invalid!');
+        }
+
+        const { accesToken, refreshToken }: ITokens = await generateTokens(
+            admin,
+        );
+
+        res.status(200).render('loading/spinner', {
+            tokens: { accesToken, refreshToken },
+            script: 'saveTokenLogin.ejs',
         });
     } catch (error) {
         if (error instanceof ValidationError) {
-            res.status(422).json({
-                error: error.name,
-                details: error.message,
-            });
+            req.flash('error', error.message);
+
+            return res.redirect('/v1/auth/login');
+        }
+        if (error.name === 'MongoError') {
+            req.flash('error', `${error.name}: ${error.errmsg}`);
+            res.redirect('/v1/auth/login');
 
             return;
         }
-
-        res.status(500).json({
-            message: error.name,
-            details: error.message,
-        });
+        req.flash('error', `${error.name}: ${error.message}`);
+        res.redirect('/v1/auth/login');
 
         next(error);
     }
 }
-
 /**
  * @export
  * @function
@@ -114,14 +157,13 @@ export async function signupPage(
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-
 export async function signup(
     req: Request,
     res: Response,
     next: NextFunction,
 ): Promise<void> {
     try {
-        const { error }: Joi.ValidationResult = adminValidation.create(
+        const { error }: Joi.ValidationResult = adminValidation.signup(
             req.body,
         );
 
@@ -131,27 +173,13 @@ export async function signup(
 
         const admin: IAdminModel = await AdminService.create(req.body);
 
-        const accesToken: string = jwt.sign(
-            { email: admin.email },
-            app.get('secret'),
-            {
-                expiresIn: '5m',
-            },
+        const { accesToken, refreshToken }: ITokens = await generateTokens(
+            admin,
         );
-        const refreshToken: string = jwt.sign(
-            { email: admin.email },
-            app.get('secret'),
-            {
-                expiresIn: '3d',
-            },
-        );
-
-        await AdminService.updateRefresh(admin.id, refreshToken);
 
         res.status(200).render('spinner', {
-            accesToken,
-            refreshToken,
-            csrfToken: req.csrfToken(),
+            tokens: { accesToken, refreshToken },
+            script: 'saveTokenLogin.ejs',
         });
     } catch (error) {
         if (error instanceof ValidationError) {
@@ -167,6 +195,86 @@ export async function signup(
         }
         req.flash('error', `${error.name}: ${error.message}`);
         res.redirect('/v1/auth/signup');
+
+        next(error);
+    }
+}
+
+/**
+ * @export
+ * @function
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Promise < void >}
+ */
+export async function refreshPage(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+        res.status(200).render('loading/spinner', {
+            script: 'getRefreshAndSave.ejs',
+        });
+    } catch (error) {
+        req.flash('error', `${error.name}: ${error.message}`);
+        res.redirect('/v1/auth/login');
+
+        next(error);
+    }
+}
+
+/**
+ * @export
+ * @function
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Promise < void >}
+ */
+
+export async function refreshUpdate(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+        const token: any = req.headers['refresh-token'];
+        const reqAdminInfo: ITokenInfo | null = checkRefresh(token);
+
+        if (!reqAdminInfo) return res.redirect('/v1/auth/login');
+
+        const admin: IAdminModel = await AdminService.findOne(
+            reqAdminInfo.email,
+        );
+
+        const isMatched: boolean = admin && (await admin.compareRefresh(token));
+
+        if (!isMatched) return res.redirect('/v1/auth/login');
+
+        const { accesToken, refreshToken }: ITokens = await generateTokens(
+            admin,
+        );
+
+        res.status(200).json({
+            accesToken,
+            refreshToken,
+        });
+    } catch (error) {
+        if (error instanceof ValidationError) {
+            req.flash('error', error.message);
+
+            return res.redirect('/v1/auth/login');
+        }
+        if (error.name === 'MongoError') {
+            req.flash('error', `${error.name}: ${error.errmsg}`);
+            res.redirect('/v1/auth/login');
+
+            return;
+        }
+        req.flash('error', `${error.name}: ${error.message}`);
+        res.redirect('/v1/auth/login');
 
         next(error);
     }

@@ -3,7 +3,7 @@ import * as connections from '../../config/connection';
 import { AggregationCursor } from 'mongodb';
 
 export interface IUserModel extends Document {
-    fullname: string;
+    fullName: string;
     email: string;
 }
 
