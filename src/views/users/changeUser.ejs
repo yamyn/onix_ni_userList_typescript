@@ -24,7 +24,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="?_method=PUT" method="post" id="updateUserForm">
+                <form action="/v1/users?_method=PUT" method="post" id="updateUserForm">
+                <input type="hidden" name="xatoken" value="" />
                     <input
                         type="hidden"
                         name="_csrf"
@@ -76,10 +77,11 @@
             </div>
             <div class="modal-body">
                 <form
-                    action="?_method=DELETE"
+                    action="/v1/users?_method=DELETE"
                     method="post"
                     id="deleteUserForm"
                 >
+                <input type="hidden" name="xatoken" value="" />
                     <input
                         type="hidden"
                         name="_csrf"

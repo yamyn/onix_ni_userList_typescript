@@ -5,7 +5,7 @@
 ### get start with browser
 
 ```
-   'localhost:3000/v1/users'
+   'localhost:3030/v1/users'
 
 ```
 
@@ -21,7 +21,7 @@
 ### Find all screens
 
 ```
-    curl --location --request GET 'localhost:3000/v1/screens/' \
+    curl --location --request GET 'localhost:3030/v1/screens/' \
 ```
 
 ## Emails list
@@ -29,6 +29,6 @@
 ### Find all emails array documents
 
 ```
-    curl --location --request GET 'localhost:3000/v1/emails/' \
+    curl --location --request GET 'localhost:3030/v1/emails/' \
 
 ```

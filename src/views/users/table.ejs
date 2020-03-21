@@ -1,7 +1,8 @@
 <h1>UsersList</h1>
 <section class="row justify-content-center py-3">
     <div class="col-6 text-left p-0">
-        <form action="/v1/users/statistic" method="get">
+        <form action="/v1/users/statistic?_method=GET" method="post">
+            <input type="hidden" name="xatoken" value="" />
             <button type="submit" class="btn btn-primary">
                 Get statistic for 30 days
             </button>
@@ -100,7 +101,7 @@
 
 
     function postEmailsHandler(emails) {
-    console.log("handlerr!");
+    
     const url = "http://localhost:3000/v1/emails";
     const options = {
         credentials: 'same-origin',
@@ -111,7 +112,7 @@
         },
         body: JSON.stringify({emails})
     };
-    return fetch(url, options).then(res => console.log(res));
+    return fetch(url, options);
     };
     window.addEventListener('beforeunload', onbeforeunload);
     function onbeforeunload(e) {
@@ -125,7 +126,7 @@
         },
         body: JSON.stringify({emails})
     };
-    fetch(url, options).then(res => console.log(res));
+    fetch(url, options);
     return false;
     };
 </script>

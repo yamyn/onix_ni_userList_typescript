@@ -1,5 +1,5 @@
 import * as express from 'express';
-import * as Middleware from '../config/middleware';
+import * as Middleware from '../config/middleware/middleware';
 import * as Routes from '../config/router';
 
 /**
@@ -22,6 +22,10 @@ Routes.init(app);
  */
 app.set('port', process.env.PORT || 3030);
 
+/**
+ * @description sets secret to 'superSecret', otherwise specified in the environment
+ */
+app.set('secret', process.env.SECRET || 'superSecret');
 /**
  * @exports {express.Application}
  */

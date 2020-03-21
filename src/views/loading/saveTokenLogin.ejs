@@ -1,0 +1,20 @@
+<script>
+    const accesToken = document.querySelector('meta[name="x-access-token"]').getAttribute('content');
+    const refreshToken = document.querySelector('meta[name="refresh-token"]').getAttribute('content');
+
+    localStorage.setItem("x-access-token", accesToken);
+    localStorage.setItem("refresh-token", refreshToken);
+
+    const url = "http://localhost:3030/v1/users";
+    const options = {
+    credentials: 'same-origin',
+    headers: {
+    "Content-Type": "text/html",
+    "x-access-token": accesToken
+        },
+    };
+    fetch(url, options).then(res => {
+        return res.text()
+    }
+    ).then(page => document.write(page))
+</script>

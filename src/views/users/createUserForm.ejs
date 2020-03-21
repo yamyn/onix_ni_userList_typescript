@@ -24,8 +24,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="" method="post">
+                <form action="/v1/users" method="post">
                     <input type="hidden" name="_csrf" value="<%=csrfToken %>" />
+                    <input type="hidden" name="xatoken" value="" />
                     <div class="form-group">
                         <input
                             placeholder="Full name"

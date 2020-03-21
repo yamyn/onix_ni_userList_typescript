@@ -40,5 +40,23 @@
             successes !== 'undefined') { %> <%-
             include("./notify/success-notify.ejs") %> <% } %> <%- include
             (template) %>
+
+        <script>
+        const forms = document.querySelectorAll("form");
+
+        forms.forEach(form => {
+            form.addEventListener("submit", submitHandler);
+        });
+        console.log(forms);
+        function submitHandler(event) {
+        event.preventDefault();
+        event.currentTarget.elements.xatoken.value = localStorage.getItem(
+            "x-access-token"
+        );
+    
+        event.currentTarget.submit();
+        }
+            
+        </script>
     </body>
 </html>

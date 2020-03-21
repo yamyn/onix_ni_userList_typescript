@@ -1,0 +1,28 @@
+<script>
+    const refreshToken = localStorage.getItem("refresh-token");
+    const url = "http://localhost:3030/v1/auth/refreshUp";
+    const options = {
+    credentials: 'same-origin',
+    headers: {
+    "Content-Type": "application/json",
+    "refresh-token": refreshToken
+        },
+    };
+    fetch(url, options).then(res => res.json()).then(data => {
+        localStorage.setItem("x-access-token", data.accesToken);
+        localStorage.setItem("refresh-token", data.refreshToken);
+
+        const url = "http://localhost:3030/v1/users";
+        const options = {
+        credentials: 'same-origin',
+        headers: {
+        "Content-Type": "text/html",
+        "x-access-token": data.accesToken
+            },
+        };
+        fetch(url, options).then(res => {
+            return res.text()
+        }
+        ).then(page => document.write(page));
+    });
+</script>
