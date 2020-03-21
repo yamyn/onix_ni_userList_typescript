@@ -26,7 +26,7 @@ export function isAuthenticated(
     if (token) {
         try {
             const admin: object | string = jwt.verify(token, app.get('secret'));
-            console.log(admin);
+
             req.admin = admin;
 
             return next();
