@@ -4,11 +4,13 @@ import { Types, QueryUpdateOptions } from 'mongoose';
 
 /**
  * @export
- * @implements {IUserModelService}
+ * @implements { IAdminService }
  */
 
 const AdminService: IAdminService = {
     /**
+     * @method findAll
+     * @summary get all admins
      * @returns {Promise < IAdminModel[] >}
      * @memberof AdminService
      */
@@ -17,6 +19,7 @@ const AdminService: IAdminService = {
     },
 
     /**
+     * @method findOne
      * @param {string} email
      * @summary get an admin
      * @returns {Promise<IAdminModel>}
@@ -38,7 +41,6 @@ const AdminService: IAdminService = {
     },
 
     /**
-     * Find an admin by id and update his profile
      * @method updateById
      * @param {string} id
      * @param {IAdminModel} newProfile

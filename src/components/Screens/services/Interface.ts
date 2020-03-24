@@ -17,4 +17,11 @@ export interface IScreensService {
      * @memberof IScreensService
      */
     create(IScreensModel: IScreensModel): Promise<IScreensModel>;
+
+    /**
+     * @param {string} id
+     * @returns {Promise<IScreensModel>}
+     * @memberof IScreensService
+     */
+    deleteById(id: string): Promise<IScreensModel>;
 }

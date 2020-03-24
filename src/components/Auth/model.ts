@@ -8,9 +8,7 @@ export interface IAdminModel extends Document {
     email: string;
     password: string;
     fullName: string;
-    refreshToken: string;
     comparePassword: (password: string) => Promise<boolean>;
-    compareRefresh: (token: string) => boolean;
 }
 
 const AdminSchema: Schema = new Schema(

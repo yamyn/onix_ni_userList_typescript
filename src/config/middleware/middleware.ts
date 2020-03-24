@@ -42,9 +42,6 @@ export function configure(app: express.Application): void {
     app.use(
         session({
             secret: config.secret,
-            cookie: {
-                maxAge: 3600 * 24,
-            },
             resave: true,
             saveUninitialized: true,
             store: new RedisStore({

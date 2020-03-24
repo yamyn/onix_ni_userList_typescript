@@ -4,6 +4,7 @@ import { IScreensModel } from '../model';
 export interface IScreen {
     link: string;
     date: string;
+    id: string;
 }
 
 export function transformDate(emails: IScreensModel[]): IScreen[] {
@@ -16,6 +17,7 @@ export function transformDate(emails: IScreensModel[]): IScreen[] {
             return {
                 date,
                 link: screen.screenLink,
+                id: screen.id,
             };
         },
     );

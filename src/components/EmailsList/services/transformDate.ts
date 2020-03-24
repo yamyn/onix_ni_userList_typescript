@@ -4,6 +4,7 @@ import { IEmailListModel } from '../model';
 export interface IEmail {
     emails: string[];
     date: string;
+    id: string;
 }
 
 export function transformDate(emails: IEmailListModel[]): IEmail[] {
@@ -16,6 +17,7 @@ export function transformDate(emails: IEmailListModel[]): IEmail[] {
             return {
                 date,
                 emails: emailObj.emails,
+                id: emailObj.id,
             };
         },
     );

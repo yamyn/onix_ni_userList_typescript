@@ -17,4 +17,11 @@ export interface IEmailListService {
      * @memberof IEmailListService
      */
     create(IEmailListModel: IEmailListModel): Promise<IEmailListModel>;
+
+    /**
+     * @param {string} id
+     * @returns {Promise<IEmailListModel>}
+     * @memberof IEmailListService
+     */
+    deleteById(id: string): Promise<IEmailListModel>;
 }

@@ -57,3 +57,36 @@ export async function create(
         next(error);
     }
 }
+
+/**
+ * @export
+ * @function
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Promise<void>}
+ */
+export async function deleteById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+        const emailList: IEmailListModel = await EmailsListService.deleteById(
+            req.body.id,
+        );
+
+        req.flash(
+            'sucsess',
+            `EmailsList with _id = ${emailList.id} has been
+        deleted successfully!`,
+        );
+
+        res.redirect('/v1/emails');
+    } catch (error) {
+        req.flash('error', `${error.name}: ${error.message}`);
+        res.redirect('/v1/emails');
+
+        next(error);
+    }
+}

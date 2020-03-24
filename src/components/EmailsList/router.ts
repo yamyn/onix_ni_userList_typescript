@@ -23,4 +23,14 @@ router.get('/', EmailListComponent.findAll);
  */
 router.post('/', EmailListComponent.create);
 
+/**
+ * Route serving a removing user
+ * @name /v1/emails
+ * @function
+ * @inner
+ * @param {string} path -Express path
+ * @param {callback} middleware - Express middleware
+ */
+router.delete('/', EmailListComponent.deleteById);
+
 export default router;

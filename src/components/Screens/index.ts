@@ -26,9 +26,42 @@ export async function findAll(
             errors: req.flash('error'),
             successes: req.flash('sucsess'),
         });
-        res.status(200).json({ screens });
     } catch (error) {
-        res.status(500).json({ message: 'Something went wrong' });
+        req.flash('error', `${error.name}: ${error.message}`);
+        res.redirect('/v1/screens');
+
+        next(error);
+    }
+}
+
+/**
+ * @export
+ * @function
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Promise<void>}
+ */
+export async function deleteById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+        const screen: IScreensModel = await ScreensService.deleteById(
+            req.body.id,
+        );
+
+        req.flash(
+            'sucsess',
+            `Screen with _id = ${screen.id} has been
+        deleted successfully!`,
+        );
+
+        res.redirect('/v1/screens');
+    } catch (error) {
+        req.flash('error', `${error.name}: ${error.message}`);
+        res.redirect('/v1/screens');
 
         next(error);
     }

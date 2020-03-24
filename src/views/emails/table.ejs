@@ -1,3 +1,4 @@
+<%- include("../deleteTable.ejs") %>
 <section class="row justify-content-center pt-5">
     <table class="table table-hover ">
         <thead class="thead-dark">
@@ -5,6 +6,7 @@
                 <th scope="col">#</th>
                 <th scope="col">date</th>
                 <th scope="col">amount</th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody id="userTBody">
@@ -13,24 +15,25 @@
                 <th scope="row"><%=i + 1%></th>
                 <td id="email-date"><%=email.date %></td>
                 <td id="email-count"><%=email.emails.length %></td>
+                <td>
+                    <label
+                        class="btn btn-sm btn-outline-danger"
+                        data-toggle="modal"
+                        data-target="#deleteUserModal"
+                    >
+                        <input
+                            class="visually-hidden"
+                            type="radio"
+                            form="deleteUserForm"
+                            name="id"
+                            value="<%=email.id %>"
+                        />
+                        delete
+                    </label>
+                </td>
             </tr>
             <% }); %>
         </tbody>
     </table>
 </section>
 </div>
-<script
-    src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-    crossorigin="anonymous"
-></script>
-<script
-    src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-    crossorigin="anonymous"
-></script>
-<script
-    src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-    crossorigin="anonymous"
-></script>

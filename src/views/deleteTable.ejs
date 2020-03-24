@@ -1,7 +1,7 @@
-<!-- Modal for upadate user-->
+<!-- Modal for Delete user-->
 <div
     class="modal fade"
-    id="staticBackdrop-1"
+    id="deleteUserModal"
     data-backdrop="static"
     tabindex="-1"
     role="dialog"
@@ -12,7 +12,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="staticBackdropLabel">
-                    Upadate user profile
+                    Delete object?
                 </h5>
                 <button
                     type="button"
@@ -24,30 +24,30 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="/v1/users?_method=PUT" method="post" id="updateUserForm">
-                <input type="hidden" name="xatoken" value="" />
+                <form
+                    action="<% if (template === 'users/table.ejs') { %>/v1/users<% } %><% if (template === 'emails/table.ejs') { %>/v1/emails<% } %><% if (template === 'screens/table.ejs') { %>/v1/screens<% } %>?_method=DELETE"
+                    method="post"
+                    id="deleteUserForm"
+                >
                     <input
                         type="hidden"
                         name="_csrf"
                         value="<%= csrfToken %>"
                     />
-                    <div class="form-group">
-                        <input
-                            placeholder="Full name"
-                            type="text"
-                            class="form-control"
-                            id="exampleInputPassword1"
-                            name="fullName"
-                        />
-                    </div>
                     <button type="submit" class="btn btn-primary btn-block">
-                        Sign up
+                        Yes, I`m sure
                     </button>
                 </form>
             </div>
-            <div class="modal-footer"></div>
+            <div class="modal-footer">
+                <button
+                    type="button"
+                    class="btn btn-secondary btn-block"
+                    data-dismiss="modal"
+                >
+                    No, back to the list
+                </button>
+            </div>
         </div>
     </div>
 </div>
-
-
