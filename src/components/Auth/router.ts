@@ -1,6 +1,5 @@
 import { Router } from 'express';
 import * as AuthComponent from '../Auth';
-import * as passport from 'passport';
 
 /**
  * Express router to mount user related functions on.
@@ -10,18 +9,8 @@ import * as passport from 'passport';
 const router: Router = Router();
 
 /**
- * Route serving list of users.
- * @name /v1/users
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware.
- */
-router.get('/', AuthComponent.findAll);
-
-/**
- * Route serving a creating admin
- * @name /v1/users
+ * Route serving get login page
+ * @name /v1/auth/login
  * @function
  * @inner
  * @param {string} path - Express path
@@ -29,8 +18,8 @@ router.get('/', AuthComponent.findAll);
  */
 router.get('/login', AuthComponent.loginPage);
 /**
- * Route serving a creating admin
- * @name /v1/users/
+ * Route serving login admin in system
+ * @name /v1/auth/login
  * @function
  * @inner
  * @param {string} path - Express path
@@ -39,8 +28,8 @@ router.get('/login', AuthComponent.loginPage);
 router.post('/login', AuthComponent.login);
 
 /**
- * Route serving a creating admin
- * @name /v1/users
+ * Route serving get signup page
+ * @name /v1/auth/signup
  * @function
  * @inner
  * @param {string} path - Express path
@@ -49,43 +38,13 @@ router.post('/login', AuthComponent.login);
 router.get('/signup', AuthComponent.signupPage);
 /**
  * Route serving a creating admin
- * @name /v1/users/
+ * @name /v1/auth/signup
  * @function
  * @inner
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
 router.post('/signup', AuthComponent.signup);
-
-/**
- * Route serving a new user
- * @name /v1/users
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware
- */
-// router.post('/', AuthComponent.create);
-
-/**
- * Route serving updating user
- * @name /v1/users
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware
- */
-router.put('/', AuthComponent.updateById);
-
-/**
- * Route serving a removing user
- * @name /v1/users
- * @function
- * @inner
- * @param {string} path -Express path
- * @param {callback} middleware - Express middleware
- */
-router.delete('/', AuthComponent.deleteById);
 
 /**
  * @export {express.Router}
