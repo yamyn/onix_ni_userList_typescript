@@ -20,7 +20,6 @@ export async function findAll(
     next: NextFunction,
 ): Promise<void> {
     try {
-        req.flash('token', null);
         const users: IUserModel[] = await UserService.findAll();
 
         res.status(200).render('index', {

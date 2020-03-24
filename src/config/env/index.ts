@@ -10,6 +10,10 @@ interface IConfig {
     };
     dropboxToken: string;
     secret: string;
+    redis: {
+        port: number;
+        host: string;
+    };
 }
 
 const NODE_ENV: string = process.env.NODE_ENV || 'development';
@@ -21,7 +25,11 @@ const development: IConfig = {
         MONGODB_DB_MAIN: process.env.MONGODB_DB_MAIN || 'users_ts_db',
     },
     dropboxToken: process.env.DROPBOX_TOKEN || 'DropboxKey',
-    secret: process.env.SECRET || '@QEGTUI',
+    secret: process.env.SECRET || '@CANS',
+    redis: {
+        port: parseInt(process.env.REDIS_PORT, 10) || 6379,
+        host: process.env.REDIS_HOST || '127.0.0.1',
+    },
 };
 
 const production: IConfig = {
@@ -31,7 +39,11 @@ const production: IConfig = {
         MONGODB_DB_MAIN: process.env.MONGODB_DB_MAIN || 'users_ts_db',
     },
     dropboxToken: process.env.DROPBOX_TOKEN || 'DropboxKey',
-    secret: process.env.SECRET || '@QEGTUI',
+    secret: process.env.SECRET || '@CANS',
+    redis: {
+        port: parseInt(process.env.REDIS_PORT, 10) || 6379,
+        host: process.env.REDIS_HOST || '127.0.0.1',
+    },
 };
 
 const test: IConfig = {
@@ -41,7 +53,11 @@ const test: IConfig = {
         MONGODB_DB_MAIN: 'test_users_db',
     },
     dropboxToken: process.env.DROPBOX_TOKEN || 'DropboxKey',
-    secret: process.env.SECRET || '@QEGTUI',
+    secret: process.env.SECRET || '@CANS',
+    redis: {
+        port: parseInt(process.env.REDIS_PORT, 10) || 6379,
+        host: process.env.REDIS_HOST || '127.0.0.1',
+    },
 };
 
 const config: {

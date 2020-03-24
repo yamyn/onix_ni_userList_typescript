@@ -82,11 +82,4 @@ AdminSchema.methods.comparePassword = async function(
     }
 };
 
-/**
- * Method for comparing refreshToken
- */
-AdminSchema.methods.compareRefresh = function(token: string): boolean {
-    return token === this.refreshToken;
-};
-
 export default connections.db.model<IAdminModel>('Admin', AdminSchema);

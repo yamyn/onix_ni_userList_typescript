@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as AuthComponent from '../Auth';
+import * as passport from 'passport';
 
 /**
  * Express router to mount user related functions on.
@@ -55,25 +56,6 @@ router.get('/signup', AuthComponent.signupPage);
  * @param {callback} middleware - Express middleware.
  */
 router.post('/signup', AuthComponent.signup);
-
-/**
- * Route serving a creating admin
- * @name /v1/users
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware.
- */
-router.get('/getRefresh', AuthComponent.refreshPage);
-/**
- * Route serving a creating admin
- * @name /v1/users/
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware.
- */
-router.get('/refreshUp', AuthComponent.refreshUpdate);
 
 /**
  * Route serving a new user

@@ -10,6 +10,13 @@ import * as helmet from 'helmet';
 import * as express from 'express';
 import * as methodOverride from 'method-override';
 import * as csrf from 'csurf';
+import * as passport from 'passport';
+import * as connectRedis from 'connect-redis';
+import config from '../env';
+import * as redis from 'redis';
+
+const RedisStore: connectRedis.RedisStore = connectRedis(session);
+const redisClient: redis.RedisClient = redis.createClient();
 
 /**
  * @export
@@ -34,14 +41,22 @@ export function configure(app: express.Application): void {
     // express session for create session
     app.use(
         session({
-            secret: 'FixicMom',
+            secret: config.secret,
             cookie: {
                 maxAge: 3600 * 24,
             },
-            resave: false,
+            resave: true,
             saveUninitialized: true,
+            store: new RedisStore({
+                port: config.redis.port,
+                host: config.redis.host,
+                client: redisClient,
+                ttl: 180,
+            }),
         }),
     );
+    app.use(passport.initialize());
+    app.use(passport.session());
     // allow to get flash message in response
     app.use(flash());
     // helps you secure your Express apps by setting various HTTP headers
