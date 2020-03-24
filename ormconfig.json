@@ -1,0 +1,7 @@
+// {
+//     "type": "mongodb",
+//     "host": "localhost",
+//     "port": 27017,
+//     "database": "users_db",
+//     "entities": ["../components/User/model.ts"]
+// }

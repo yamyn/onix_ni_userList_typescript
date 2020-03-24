@@ -34,7 +34,8 @@
 // );
 
 // export default connections.db.model<IUserModel>('UserModel', UserSchema);
-import { connections } from '../../config/connection';
+
+import { connection } from '../../config/connection';
 import { AggregationCursor } from 'mongodb';
 import {
     createConnection,
@@ -45,9 +46,12 @@ import {
     Column,
     getMongoRepository,
     MongoRepository,
+    Index,
+    CreateDateColumn,
+    UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('usermodels')
 export class User {
     @ObjectIdColumn()
     id: ObjectID;
@@ -55,20 +59,27 @@ export class User {
     @Column()
     fullName: string;
 
-    @Column({
+    @Index({
         unique: true,
     })
+    @Column()
     email: string;
-}
-// const UserModel: MongoRepository =
 
+    @CreateDateColumn({ type: 'timestamp' })
+    createdAt: Date;
+
+    @UpdateDateColumn({ type: 'timestamp' })
+    updatedAt: Date;
+}
+
+// export default getMongoRepository(User);
 export default async (): Promise<MongoRepository<User>> => {
-    const connection: Connection = await connections();
-    const UserModel: MongoRepository<User> = connection.getMongoRepository(
+    const connect: Connection = await connection();
+    const UserRepository: MongoRepository<User> = connect.getMongoRepository(
         User,
     );
 
-    return UserModel;
+    return UserRepository;
 };
 
 // MongoRepository<User>

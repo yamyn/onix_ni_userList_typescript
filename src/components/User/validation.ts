@@ -1,6 +1,6 @@
 import Validation from '../validation';
 import * as Joi from '@hapi/joi';
-import { IUserModel } from './model';
+import { User } from './model';
 
 /**
  * @export
@@ -32,7 +32,7 @@ class UserValidation extends Validation {
      * @returns {Joi.ValidationResult}
      * @memberof UserValidation
      */
-    create(profile: IUserModel): Joi.ValidationResult {
+    create(profile: User): Joi.ValidationResult {
         return this.Joi.object({
             email: this.Joi.string().email(),
             fullName: this.Joi.string()

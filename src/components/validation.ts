@@ -1,5 +1,6 @@
 import * as Joi from '@hapi/joi';
-import { Types } from 'mongoose';
+// import { Types } from 'mongoose';
+import { ObjectId } from 'mongodb';
 
 /**
  * @exports
@@ -31,7 +32,7 @@ abstract class Validation {
                 helpers: Joi.CustomHelpers,
                 // options: Joi.ValidationOptions,
             ): object | string {
-                if (!Types.ObjectId.isValid(value)) {
+                if (!ObjectId.isValid(value)) {
                     return {
                         value,
                         errors: helpers.error('objectId.base'),

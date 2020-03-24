@@ -1,6 +1,7 @@
-import UserModel, { IUserModel, IStatModel } from '../model';
+import UserModel, { User } from '../model';
 import { IUserService } from './Interface';
 import { Types, QueryUpdateOptions, Aggregate } from 'mongoose';
+import { MongoRepository } from 'typeorm';
 
 /**
  * @export
@@ -12,8 +13,8 @@ const UserService: IUserService = {
      * @returns {Promise < IUserModel[] >}
      * @memberof UserService
      */
-    findAll(): Promise<IUserModel[]> {
-        return UserModel.find({}).exec();
+    async findAll(): Promise<User[]> {
+        return (await UserModel()).find({});
     },
 
     /**
@@ -22,8 +23,8 @@ const UserService: IUserService = {
      * @returns {Promise<UserModel>}
      * @memberof UserService
      */
-    findOne(code: string): Promise<IUserModel> {
-        return UserModel.findOne(code).exec();
+    async findOne(code: string): Promise<User> {
+        return (await UserModel()).findOne(code).exec();
     },
 
     /**
@@ -33,9 +34,9 @@ const UserService: IUserService = {
      * @returns {Promise<UserModel>}
      * @memberof UserService
      */
-    create(profile: IUserModel): Promise<IUserModel> {
-        return UserModel.create(profile);
-    },
+    // create(profile: User): Promise<User> {
+    //     return UserModel.create(profile);
+    // },
 
     /**
      * Find a user by id and update his profile
@@ -46,18 +47,18 @@ const UserService: IUserService = {
      * @returns {Promise<UserModel>}
      * @memberof UserService
      */
-    updateById(id: string, newProfile: IUserModel): Promise<IUserModel> {
-        const updateOptions: QueryUpdateOptions = {
-            new: true,
-            useFindAndModify: false,
-        };
+    // updateById(id: string, newProfile: User): Promise<User> {
+    //     const updateOptions: QueryUpdateOptions = {
+    //         new: true,
+    //         useFindAndModify: false,
+    //     };
 
-        return UserModel.findByIdAndUpdate(
-            { _id: Types.ObjectId(id) },
-            newProfile,
-            updateOptions,
-        ).exec();
-    },
+    //     return UserModel.findByIdAndUpdate(
+    //         { _id: Types.ObjectId(id) },
+    //         newProfile,
+    //         updateOptions,
+    //     ).exec();
+    // },
 
     /**
      * @method deleteById
@@ -66,9 +67,9 @@ const UserService: IUserService = {
      * @returns {Promise<UserModel>}
      * @memberof UserService
      */
-    deleteById(id: string): Promise<IUserModel> {
-        return UserModel.findByIdAndDelete({ _id: Types.ObjectId(id) }).exec();
-    },
+    // deleteById(id: string): Promise<User> {
+    //     return UserModel.findByIdAndDelete({ _id: Types.ObjectId(id) }).exec();
+    // },
 
     /**
      * @method getStatisti
@@ -77,34 +78,34 @@ const UserService: IUserService = {
      * @returns {Aggregate<AggregationCursor[]>}
      * @memberof UserService
      */
-    getStatistic(lastMonthDay: number): Aggregate<IStatModel[]> {
-        return UserModel.aggregate([
-            {
-                $project: {
-                    createdAt: 1,
-                    dayOfYear: {
-                        $dayOfYear: '$createdAt',
-                    },
-                },
-            },
-            {
-                $project: {
-                    dayOfYear: 1,
-                    isThisMonth: { $gte: ['$dayOfYear', lastMonthDay] },
-                    count: { $add: [1] },
-                },
-            },
-            { $match: { isThisMonth: true } },
+    // getStatistic(lastMonthDay: number): Aggregate<IStatModel[]> {
+    //     return UserModel.aggregate([
+    //         {
+    //             $project: {
+    //                 createdAt: 1,
+    //                 dayOfYear: {
+    //                     $dayOfYear: '$createdAt',
+    //                 },
+    //             },
+    //         },
+    //         {
+    //             $project: {
+    //                 dayOfYear: 1,
+    //                 isThisMonth: { $gte: ['$dayOfYear', lastMonthDay] },
+    //                 count: { $add: [1] },
+    //             },
+    //         },
+    //         { $match: { isThisMonth: true } },
 
-            {
-                $group: {
-                    _id: '$dayOfYear',
-                    number: { $sum: '$count' },
-                },
-            },
-            { $sort: { _id: 1 } },
-        ]);
-    },
+    //         {
+    //             $group: {
+    //                 _id: '$dayOfYear',
+    //                 number: { $sum: '$count' },
+    //             },
+    //         },
+    //         { $sort: { _id: 1 } },
+    //     ]);
+    // },
 };
 
 export default UserService;

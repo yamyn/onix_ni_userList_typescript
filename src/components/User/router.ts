@@ -26,46 +26,46 @@ router.get('/', UserComponent.findAll);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-router.get('/statistic', UserComponent.getStatistic);
-/**
- * Route serving a user
- * @name /v1/users/:id
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware.
- */
-// router.get('/:id', UserComponent.findById);
+// router.get('/statistic', UserComponent.getStatistic);
+// /**
+//  * Route serving a user
+//  * @name /v1/users/:id
+//  * @function
+//  * @inner
+//  * @param {string} path - Express path
+//  * @param {callback} middleware - Express middleware.
+//  */
+// // router.get('/:id', UserComponent.findById);
 
-/**
- * Route serving a new user
- * @name /v1/users
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware
- */
-router.post('/', UserComponent.create);
+// /**
+//  * Route serving a new user
+//  * @name /v1/users
+//  * @function
+//  * @inner
+//  * @param {string} path - Express path
+//  * @param {callback} middleware - Express middleware
+//  */
+// router.post('/', UserComponent.create);
 
-/**
- * Route serving updating user
- * @name /v1/users
- * @function
- * @inner
- * @param {string} path - Express path
- * @param {callback} middleware - Express middleware
- */
-router.put('/', UserComponent.updateById);
+// /**
+//  * Route serving updating user
+//  * @name /v1/users
+//  * @function
+//  * @inner
+//  * @param {string} path - Express path
+//  * @param {callback} middleware - Express middleware
+//  */
+// router.put('/', UserComponent.updateById);
 
-/**
- * Route serving a removing user
- * @name /v1/users
- * @function
- * @inner
- * @param {string} path -Express path
- * @param {callback} middleware - Express middleware
- */
-router.delete('/', UserComponent.deleteById);
+// /**
+//  * Route serving a removing user
+//  * @name /v1/users
+//  * @function
+//  * @inner
+//  * @param {string} path -Express path
+//  * @param {callback} middleware - Express middleware
+//  */
+// router.delete('/', UserComponent.deleteById);
 
 /**
  * @export {express.Router}
