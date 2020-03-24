@@ -2,6 +2,7 @@ import { Document, Schema } from 'mongoose';
 import * as connections from '../../config/connection';
 
 export interface IScreensModel extends Document {
+    createdAt: string;
     screenLink: string;
 }
 

@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as AuthComponent from '../Auth';
+import * as passportConfig from '../../police/passport';
 
 /**
  * Express router to mount user related functions on.
@@ -16,7 +17,11 @@ const router: Router = Router();
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-router.get('/login', AuthComponent.loginPage);
+router.get(
+    '/login',
+    passportConfig.isNotAuthenticated,
+    AuthComponent.loginPage,
+);
 /**
  * Route serving login admin in system
  * @name /v1/auth/login
@@ -35,7 +40,11 @@ router.post('/login', AuthComponent.login);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-router.get('/signup', AuthComponent.signupPage);
+router.get(
+    '/signup',
+    passportConfig.isNotAuthenticated,
+    AuthComponent.signupPage,
+);
 /**
  * Route serving a creating admin
  * @name /v1/auth/signup
@@ -45,6 +54,16 @@ router.get('/signup', AuthComponent.signupPage);
  * @param {callback} middleware - Express middleware.
  */
 router.post('/signup', AuthComponent.signup);
+
+/**
+ * Route serving Logout from users accounts.
+ * @name /v1/auth/logout
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+router.get('/logout', AuthComponent.logout);
 
 /**
  * @export {express.Router}

@@ -24,6 +24,7 @@ export async function findAll(
 
         res.status(200).render('index', {
             users,
+            adminName: req.session.passport.user,
             csrfToken: req.csrfToken(),
             template: 'users/table.ejs',
             errors: req.flash('error'),
@@ -55,6 +56,7 @@ export async function getStatistic(
 
         res.status(200).render('index', {
             statistic,
+            adminName: req.session.passport.user,
             csrfToken: req.csrfToken(),
             template: 'users/statistic.ejs',
             errors: req.flash('error'),

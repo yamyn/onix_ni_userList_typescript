@@ -2,7 +2,8 @@ import { Document, Schema } from 'mongoose';
 import * as connections from '../../config/connection';
 
 export interface IEmailListModel extends Document {
-    email: string[];
+    createdAt: string;
+    emails: string[];
 }
 
 const EmailsListSchema: Schema = new Schema(

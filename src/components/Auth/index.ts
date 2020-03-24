@@ -179,6 +179,26 @@ export async function signup(
 /**
  * @export
  * @function
+ * @summary Makes logout from account
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @param {Express.NextFunction} next
+ * @returns {Express.Response}
+ */
+export function logout(req: Request, res: Response, next: NextFunction): void {
+    req.session.destroy((error: Error): void => {
+        if (error) {
+            next(error);
+
+            return;
+        }
+    });
+    res.redirect('/v1/auth/login');
+}
+
+/**
+ * @export
+ * @function
  * @param {express.Request} req
  * @param {express.Response} res
  * @param {express.NextFunction} next

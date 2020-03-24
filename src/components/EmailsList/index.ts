@@ -1,6 +1,7 @@
-import EmailsListService from './service';
+import EmailsListService from './services/service';
 import { IEmailListModel } from './model';
 import { NextFunction, Request, Response } from 'express';
+import { transformDate, IEmail } from './services/transformDate';
 
 /**
  * @export
@@ -17,8 +18,16 @@ export async function findAll(
 ): Promise<void> {
     try {
         const emails: IEmailListModel[] = await EmailsListService.findAll();
+        const emailList: IEmail[] = transformDate(emails);
 
-        res.status(200).json({ emails });
+        res.status(200).render('index', {
+            emailList,
+            adminName: req.session.passport.user,
+            csrfToken: req.csrfToken(),
+            template: 'emails/table.ejs',
+            errors: req.flash('error'),
+            successes: req.flash('sucsess'),
+        });
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong' });
 

@@ -16,7 +16,7 @@ export interface IAdminService {
      * @returns {Promise<IAdminModel>}
      * @memberof IAdminService
      */
-    findOne(email: string): Promise<IAdminModel>;
+    findOne(id: string): Promise<IAdminModel>;
 
     /**
      * @param {IAdminModel} IAdminModel

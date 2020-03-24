@@ -43,7 +43,7 @@ export function init(app: express.Application): void {
      * @param {string} path - Express path
      * @param {callback} middleware - Express middleware.
      */
-    app.use('/v1/emails', EmailListRouter);
+    app.use('/v1/emails', passportConfig.isAuthenticated, EmailListRouter);
 
     /**
      * Forwards any requests to the /v1/screens URI to ScreensRouter.

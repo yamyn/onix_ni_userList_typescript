@@ -1,4 +1,4 @@
-import { IEmailListModel } from './model';
+import { IEmailListModel } from '../model';
 
 /**
  * @export

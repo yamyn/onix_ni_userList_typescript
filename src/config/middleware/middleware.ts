@@ -51,7 +51,7 @@ export function configure(app: express.Application): void {
                 port: config.redis.port,
                 host: config.redis.host,
                 client: redisClient,
-                ttl: 180,
+                ttl: 300,
             }),
         }),
     );

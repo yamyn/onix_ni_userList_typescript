@@ -1,4 +1,4 @@
-import EmailsListModel, { IEmailListModel } from './model';
+import EmailsListModel, { IEmailListModel } from '../model';
 import { IEmailListService } from './Interface';
 
 /**

@@ -34,6 +34,7 @@
         <title>UsersList</title>
     </head>
     <body>
+        <%- include("./header.ejs") %>
         <div class="container text-center">
             <% if (typeof errors !== 'undefined') { %> <%-
             include("./notify/error-notify.ejs") %> <% } %> <% if (typeof
