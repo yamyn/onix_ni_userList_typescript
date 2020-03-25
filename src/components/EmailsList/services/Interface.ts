@@ -19,6 +19,13 @@ export interface IEmailListService {
     create(IEmailListModel: IEmailListModel): Promise<IEmailListModel>;
 
     /**
+     * @param {string} code
+     * @returns {Promise<IEmailListModel>}
+     * @memberof IEmailListService
+     */
+    findById(id: string): Promise<IEmailListModel>;
+
+    /**
      * @param {string} id
      * @returns {Promise<IEmailListModel>}
      * @memberof IEmailListService

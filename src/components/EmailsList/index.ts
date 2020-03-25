@@ -18,10 +18,10 @@ export async function findAll(
 ): Promise<void> {
     try {
         const emails: IEmailListModel[] = await EmailsListService.findAll();
-        const emailList: IEmail[] = transformDate(emails);
+        const emailsList: IEmail[] = transformDate(emails);
 
         res.status(200).render('index', {
-            emailList,
+            emailsList,
             adminName: req.session.passport.user,
             csrfToken: req.csrfToken(),
             template: 'emails/table.ejs',
@@ -53,6 +53,40 @@ export async function create(
         res.status(200).json({ message: 'emails was saved' });
     } catch (error) {
         res.status(500).json({ message: 'Something went wrong' });
+
+        next(error);
+    }
+}
+
+/**
+ * @export
+ * @function
+ * @param {express.Request} req
+ * @param {express.Response} res
+ * @param {express.NextFunction} next
+ * @returns {Promise < void >}
+ */
+export async function findById(
+    req: Request,
+    res: Response,
+    next: NextFunction,
+): Promise<void> {
+    try {
+        const emailList: IEmailListModel = await EmailsListService.findById(
+            req.params.id,
+        );
+        console.log(emailList);
+        res.status(200).render('index', {
+            emailList,
+            adminName: req.session.passport.user,
+            csrfToken: req.csrfToken(),
+            template: 'emails/oneListTable.ejs',
+            errors: req.flash('error'),
+            successes: req.flash('sucsess'),
+        });
+    } catch (error) {
+        req.flash('error', `${error.name}: ${error.message}`);
+        res.redirect('/v1/emails');
 
         next(error);
     }

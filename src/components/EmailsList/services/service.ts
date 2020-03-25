@@ -28,6 +28,16 @@ const EmailListService: IEmailListService = {
     },
 
     /**
+     * @param {string} id
+     * @summary get a emailList
+     * @returns {Promise<IEmailListModel>}
+     * @memberof UserService
+     */
+    findById(id: string): Promise<IEmailListModel> {
+        return EmailsListModel.findById(id).exec();
+    },
+
+    /**
      * @method deleteById
      * @param {string} id
      * @returns {Promise< IEmailListModel >}

@@ -69,6 +69,7 @@ export async function getStatistic(
         next(error);
     }
 }
+
 /**
  * @export
  * @function
@@ -77,7 +78,6 @@ export async function getStatistic(
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-
 export async function findById(
     req: Request,
     res: Response,

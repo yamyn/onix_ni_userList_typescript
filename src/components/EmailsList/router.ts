@@ -14,6 +14,16 @@ const router: Router = Router();
 router.get('/', EmailListComponent.findAll);
 
 /**
+ * Route serving a email
+ * @name /v1/users/:id
+ * @function
+ * @inner
+ * @param {string} path - Express path
+ * @param {callback} middleware - Express middleware.
+ */
+router.get('/:id', EmailListComponent.findById);
+
+/**
  * Route serving a new emailsList
  * @name /v1/emails
  * @function

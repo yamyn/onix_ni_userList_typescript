@@ -1,5 +1,7 @@
 <%- include("../deleteTable.ejs") %>
+<form action="/v1/emails/" method="GET" id="oneListForm"></form>
 <section class="row justify-content-center pt-5">
+<h3>The total number - <%=emailsList.length %></h3>
     <table class="table table-hover ">
         <thead class="thead-dark">
             <tr>
@@ -7,14 +9,18 @@
                 <th scope="col">date</th>
                 <th scope="col">amount</th>
                 <th scope="col"></th>
+                <th scope="col"></th>
             </tr>
         </thead>
         <tbody id="userTBody">
-            <% emailList.forEach(function(email, i){ %>
+            <% emailsList.forEach(function(email, i){ %>
             <tr>
                 <th scope="row"><%=i + 1%></th>
                 <td id="email-date"><%=email.date %></td>
-                <td id="email-count"><%=email.emails.length %></td>
+                <td id="email-count"><span class="badge badge-primary badge-pill"><%=email.emails.length %></span></td>
+                <td>
+                    <a href="/v1/emails/<%=email.id %>" class="btn btn-sm btn-outline-info">browse</a>
+                </td>
                 <td>
                     <label
                         class="btn btn-sm btn-outline-danger"
