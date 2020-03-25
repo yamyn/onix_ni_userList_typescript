@@ -141,7 +141,7 @@ export async function signup(
         }
         if (error.name === 'MongoError') {
             req.flash('error', `${error.name}: ${error.errmsg}`);
-            res.redirect('/v1/auth/signup');
+            res.redirect(400, '/v1/auth/signup');
 
             return;
         }

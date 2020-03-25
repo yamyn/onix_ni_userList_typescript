@@ -35,7 +35,7 @@ export function configure(app: express.Application): void {
     // parse Cookie header and populate req.cookies with an object keyed by the cookie names.
     app.use(cookieParser());
     // added csrf token for request with to use cookie
-    app.use(csrf({ cookie: true }));
+    // app.use(csrf({ cookie: true }));
     // returns the compression middleware
     app.use(compression());
     // express session for create session

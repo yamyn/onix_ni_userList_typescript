@@ -75,7 +75,7 @@ export async function findById(
         const emailList: IEmailListModel = await EmailsListService.findById(
             req.params.id,
         );
-        console.log(emailList);
+
         res.status(200).render('index', {
             emailList,
             adminName: req.session.passport.user,
