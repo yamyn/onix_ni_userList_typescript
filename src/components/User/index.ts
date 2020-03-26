@@ -32,7 +32,7 @@ export async function findAll(
         });
     } catch (error) {
         req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/users');
+        res.redirect(500, '/v1/users');
 
         next(error);
     }
@@ -64,7 +64,7 @@ export async function getStatistic(
         });
     } catch (error) {
         req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/users');
+        res.redirect(500, '/v1/users');
 
         next(error);
     }
@@ -142,23 +142,22 @@ export async function create(
             'sucsess',
             `New user ${user.fullName} was created (with _id = ${user.id})!`,
         );
-        req.flash('token', req.body.xatoken);
 
         res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             req.flash('error', error.message);
 
-            return res.redirect('/v1/users');
+            return res.redirect(401, '/v1/users');
         }
         if (error.name === 'MongoError') {
             req.flash('error', `${error.name}: ${error.errmsg}`);
-            res.redirect('/v1/users');
+            res.redirect(401, '/v1/users');
 
             return;
         }
         req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/users');
+        res.redirect(500, '/v1/users');
 
         next(error);
     }
@@ -196,19 +195,18 @@ export async function updateById(
             `User ${user.fullName} (with _id = ${user.id}) has been
         updated successfully!`,
         );
-        req.flash('token', req.body.xatoken);
 
         res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             req.flash('error', error.message);
-            res.redirect('/v1/users');
+            res.redirect(401, '/v1/users');
 
             return;
         }
 
         req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/users');
+        res.redirect(500, '/v1/users');
 
         next(error);
     }
@@ -243,19 +241,18 @@ export async function deleteById(
             `User ${user.fullName} (with _id = ${user.id}) has been
         deleted successfully!`,
         );
-        req.flash('token', req.body.xatoken);
 
         res.redirect('/v1/users');
     } catch (error) {
         if (error instanceof ValidationError) {
             req.flash('error', error.message);
-            res.redirect('/v1/users');
+            res.redirect(401, '/v1/users');
 
             return;
         }
 
         req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/users');
+        res.redirect(500, '/v1/users');
 
         next(error);
     }

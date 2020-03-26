@@ -28,7 +28,7 @@ export async function loginPage(
         });
     } catch (error) {
         req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/auth/login');
+        res.redirect(500, '/v1/auth/login');
 
         next(error);
     }
@@ -66,16 +66,16 @@ export async function login(
         if (error instanceof ValidationError) {
             req.flash('error', error.message);
 
-            return res.redirect('/v1/auth/login');
+            return res.redirect(401, '/v1/auth/login');
         }
         if (error.name === 'MongoError') {
             req.flash('error', `${error.name}: ${error.errmsg}`);
-            res.redirect('/v1/auth/login');
+            res.redirect(401, '/v1/auth/login');
 
             return;
         }
         req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/auth/login');
+        res.redirect(500, '/v1/auth/login');
 
         next(error);
     }
@@ -102,7 +102,7 @@ export async function signupPage(
         });
     } catch (error) {
         req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/auth/signup');
+        res.redirect(500, '/v1/auth/signup');
 
         next(error);
     }
@@ -137,16 +137,16 @@ export async function signup(
         if (error instanceof ValidationError) {
             req.flash('error', error.message);
 
-            return res.redirect('/v1/auth/signup');
+            return res.redirect(401, '/v1/auth/signup');
         }
         if (error.name === 'MongoError') {
             req.flash('error', `${error.name}: ${error.errmsg}`);
-            res.redirect(400, '/v1/auth/signup');
+            res.redirect(401, '/v1/auth/signup');
 
             return;
         }
         req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/auth/signup');
+        res.redirect(500, '/v1/auth/signup');
 
         next(error);
     }
@@ -169,5 +169,5 @@ export function logout(req: Request, res: Response, next: NextFunction): void {
             return;
         }
     });
-    res.redirect('/v1/auth/login');
+    res.redirect(308, '/v1/auth/login');
 }

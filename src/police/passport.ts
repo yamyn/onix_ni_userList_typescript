@@ -91,7 +91,7 @@ export function isAuthenticated(
         return next();
     }
 
-    res.redirect('/v1/auth/login');
+    res.redirect(300, '/v1/auth/login');
 }
 
 /**
@@ -106,5 +106,5 @@ export function isNotAuthenticated(
         return next();
     }
 
-    res.redirect('/v1/users');
+    res.redirect(300, '/v1/users');
 }
