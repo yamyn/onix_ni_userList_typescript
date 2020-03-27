@@ -86,7 +86,7 @@ export async function findById(
         });
     } catch (error) {
         req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/emails');
+        res.redirect(500, '/v1/emails');
 
         next(error);
     }
@@ -118,8 +118,9 @@ export async function deleteById(
 
         res.redirect('/v1/emails');
     } catch (error) {
+        console.log('Error', error);
         req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/emails');
+        res.redirect(500, '/v1/emails');
 
         next(error);
     }
