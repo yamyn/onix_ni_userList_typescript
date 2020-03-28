@@ -9,14 +9,6 @@ import { Types, QueryUpdateOptions } from 'mongoose';
 
 const AdminService: IAdminService = {
     /**
-     * @returns {Promise < IAdminModel[] >}
-     * @memberof AdminService
-     */
-    findAll(): Promise<IAdminModel[]> {
-        return AdminModel.find({}).exec();
-    },
-
-    /**
      * @param {string} email
      * @summary get an admin
      * @returns {Promise<IAdminModel>}
@@ -55,39 +47,6 @@ const AdminService: IAdminService = {
             { refreshToken },
             updateOptions,
         ).exec();
-    },
-
-    /**
-     * Find an admin by id and update his profile
-     * @method updateById
-     * @param {string} id
-     * @param {IAdminModel} newProfile
-     * @summary update an admin's profile
-     * @returns {Promise<IAdminModel>}
-     * @memberof AdminService
-     */
-    updateById(id: string, newProfile: IAdminModel): Promise<IAdminModel> {
-        const updateOptions: QueryUpdateOptions = {
-            new: true,
-            useFindAndModify: false,
-        };
-
-        return AdminModel.findByIdAndUpdate(
-            { _id: Types.ObjectId(id) },
-            newProfile,
-            updateOptions,
-        ).exec();
-    },
-
-    /**
-     * @method deleteById
-     * @param {string} id
-     * @summary delete an admin from database
-     * @returns {Promise<IAdminModel>}
-     * @memberof AdminService
-     */
-    deleteById(id: string): Promise<IAdminModel> {
-        return AdminModel.findByIdAndDelete({ _id: Types.ObjectId(id) }).exec();
     },
 };
 

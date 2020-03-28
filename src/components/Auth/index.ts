@@ -11,29 +11,10 @@ import {
     checkRefresh,
 } from './services/getTokens';
 
-/**
- * @export
- * @function
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise < void >}
- */
-export async function findAll(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-): Promise<void> {
-    try {
-        const admins: IAdminModel[] = await AdminService.findAll();
-
-        res.status(200).json({ admins });
-    } catch (error) {
-        res.status(500).json({ message: 'Something went wrong' });
-
-        next(error);
-    }
-}
+// {
+//     "x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJpY2t5Lm1vbnRoQGdtYWlsLmNvbSIsImlhdCI6MTU4NTM5MTEwNCwiZXhwIjoxNTg1MzkxNDA0fQ.pY1NF_LR__tGOassR2SWfh4bFVFbGRmKaVzz555dJA4",
+//     "refresh-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJpY2t5Lm1vbnRoQGdtYWlsLmNvbSIsImlhdCI6MTU4NTM5MTEwNCwiZXhwIjoxNTg1NjUwMzA0fQ.Z9S4pyE-6Utxvx68injcESi4Bzs_lhlmdw5uvFezSoU"
+// }
 
 /**
  * @export
@@ -43,35 +24,6 @@ export async function findAll(
  * @param {express.NextFunction} next
  * @returns {Promise < void >}
  */
-export async function loginPage(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-): Promise<void> {
-    try {
-        res.status(200).render('auth/index', {
-            csrfToken: req.csrfToken(),
-            template: 'login.ejs',
-            errors: req.flash('error'),
-            successes: req.flash('sucsess'),
-        });
-    } catch (error) {
-        req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/auth/login');
-
-        next(error);
-    }
-}
-
-/**
- * @export
- * @function
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise < void >}
- */
-
 export async function login(
     req: Request,
     res: Response,
@@ -99,51 +51,31 @@ export async function login(
             admin,
         );
 
-        res.status(200).render('loading/spinner', {
-            tokens: { accesToken, refreshToken },
-            script: 'saveTokenLogin.ejs',
+        res.status(200).json({
+            'x-access-token': accesToken,
+            'refresh-token': refreshToken,
         });
     } catch (error) {
         if (error instanceof ValidationError) {
-            req.flash('error', error.message);
-
-            return res.redirect('/v1/auth/login');
-        }
-        if (error.name === 'MongoError') {
-            req.flash('error', `${error.name}: ${error.errmsg}`);
-            res.redirect('/v1/auth/login');
+            res.status(422).json({
+                error: error.name,
+                details: error.message,
+            });
 
             return;
         }
-        req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/auth/login');
+        if (error.name === 'MongoError') {
+            res.status(422).json({
+                error: error.name,
+                details: error.errmsg,
+            });
 
-        next(error);
-    }
-}
-/**
- * @export
- * @function
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise < void >}
- */
-export async function signupPage(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-): Promise<void> {
-    try {
-        res.status(200).render('auth/index', {
-            csrfToken: req.csrfToken(),
-            template: 'signup.ejs',
-            errors: req.flash('error'),
-            successes: req.flash('sucsess'),
+            return;
+        }
+        res.status(500).json({
+            message: error.name,
+            details: error.message,
         });
-    } catch (error) {
-        req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/auth/signup');
 
         next(error);
     }
@@ -177,49 +109,31 @@ export async function signup(
             admin,
         );
 
-        res.status(200).render('spinner', {
-            tokens: { accesToken, refreshToken },
-            script: 'saveTokenLogin.ejs',
+        res.status(200).json({
+            'x-access-token': accesToken,
+            'refresh-token': refreshToken,
         });
     } catch (error) {
         if (error instanceof ValidationError) {
-            req.flash('error', error.message);
-
-            return res.redirect('/v1/auth/signup');
-        }
-        if (error.name === 'MongoError') {
-            req.flash('error', `${error.name}: ${error.errmsg}`);
-            res.redirect('/v1/auth/signup');
+            res.status(422).json({
+                error: error.name,
+                details: error.message,
+            });
 
             return;
         }
-        req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/auth/signup');
+        if (error.name === 'MongoError') {
+            res.status(422).json({
+                error: error.name,
+                details: error.errmsg,
+            });
 
-        next(error);
-    }
-}
-
-/**
- * @export
- * @function
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise < void >}
- */
-export async function refreshPage(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-): Promise<void> {
-    try {
-        res.status(200).render('loading/spinner', {
-            script: 'getRefreshAndSave.ejs',
+            return;
+        }
+        res.status(500).json({
+            message: error.name,
+            details: error.message,
         });
-    } catch (error) {
-        req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/auth/login');
 
         next(error);
     }
@@ -243,7 +157,7 @@ export async function refreshUpdate(
         const token: any = req.headers['refresh-token'];
         const reqAdminInfo: ITokenInfo | null = checkRefresh(token);
 
-        if (!reqAdminInfo) return res.redirect('/v1/auth/login');
+        if (!reqAdminInfo) throw new ValidationError('The token has expired!');
 
         const admin: IAdminModel = await AdminService.findOne(
             reqAdminInfo.email,
@@ -251,128 +165,37 @@ export async function refreshUpdate(
 
         const isMatched: boolean = admin && (await admin.compareRefresh(token));
 
-        if (!isMatched) return res.redirect('/v1/auth/login');
+        if (!isMatched) throw new ValidationError('Invalid refresh token!');
 
         const { accesToken, refreshToken }: ITokens = await generateTokens(
             admin,
         );
 
         res.status(200).json({
-            accesToken,
-            refreshToken,
+            'x-access-token': accesToken,
+            'refresh-token': refreshToken,
         });
     } catch (error) {
         if (error instanceof ValidationError) {
-            req.flash('error', error.message);
+            res.status(422).json({
+                error: error.name,
+                details: error.message,
+            });
 
-            return res.redirect('/v1/auth/login');
+            return;
         }
         if (error.name === 'MongoError') {
-            req.flash('error', `${error.name}: ${error.errmsg}`);
-            res.redirect('/v1/auth/login');
-
-            return;
-        }
-        req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/auth/login');
-
-        next(error);
-    }
-}
-
-/**
- * @export
- * @function
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise<void>}
- */
-export async function updateById(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-): Promise<void> {
-    try {
-        const { error }: Joi.ValidationResult = adminValidation.updateById(
-            req.body,
-        );
-
-        if (error) {
-            throw new ValidationError(error.details[0].message);
-        }
-
-        const user: IAdminModel = await AdminService.updateById(
-            req.body.id,
-            req.body,
-        );
-
-        // req.flash(
-        //     'sucsess',
-        //     `User ${user.fullname} (with _id = ${user.id}) has been
-        // updated successfully!`,
-        // );
-        // res.redirect('/v1/users');
-    } catch (error) {
-        if (error instanceof ValidationError) {
-            req.flash('error', error.message);
-            res.redirect('/v1/users');
-
-            return;
-        }
-
-        req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/users');
-
-        next(error);
-    }
-}
-
-/**
- * @export
- * @function
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise<void>}
- */
-export async function deleteById(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-): Promise<void> {
-    try {
-        const { error }: Joi.ValidationResult = adminValidation.deleteById(
-            req.body,
-        );
-
-        if (error) {
-            throw new ValidationError(error.details[0].message);
-        }
-
-        const user: IAdminModel = await AdminService.deleteById(req.body.id);
-
-        // req.flash(
-        //     'sucsess',
-        //     `New user ${user.fullname} was created (with _id = ${user.id})!`,
-        // );
-        // req.flash(
-        //     'sucsess',
-        //     `User ${user.fullname} (with _id = ${user.id}) has been
-        // deleted successfully!`,
-        // );
-
-        // res.redirect('/v1/users');
-    } catch (error) {
-        if (error instanceof ValidationError) {
-            res.status(422).render('errors/validError.ejs', {
-                method: 'delete',
-                name: error.name,
-                message: error.message,
+            res.status(422).json({
+                error: error.name,
+                details: error.errmsg,
             });
+
+            return;
         }
-        // req.flash('error', `${error.name}: ${error.message}`);
-        // res.redirect('/v1/users');
+        res.status(500).json({
+            message: error.name,
+            details: error.message,
+        });
 
         next(error);
     }

@@ -20,19 +20,14 @@ export async function findAll(
     next: NextFunction,
 ): Promise<void> {
     try {
-        req.flash('token', null);
         const users: IUserModel[] = await UserService.findAll();
 
-        res.status(200).render('index', {
-            users,
-            csrfToken: req.csrfToken(),
-            template: 'users/table.ejs',
-            errors: req.flash('error'),
-            successes: req.flash('sucsess'),
-        });
+        res.status(200).json({ data: users });
     } catch (error) {
-        req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/users');
+        res.status(500).json({
+            message: error.name,
+            details: error.message,
+        });
 
         next(error);
     }
@@ -54,16 +49,12 @@ export async function getStatistic(
     try {
         const statistic: IUserStatistic = await getUserStat(30);
 
-        res.status(200).render('index', {
-            statistic,
-            csrfToken: req.csrfToken(),
-            template: 'users/statistic.ejs',
-            errors: req.flash('error'),
-            successes: req.flash('sucsess'),
-        });
+        res.status(200).json({ data: statistic });
     } catch (error) {
-        req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/users');
+        res.status(500).json({
+            message: error.name,
+            details: error.message,
+        });
 
         next(error);
     }
@@ -137,27 +128,30 @@ export async function create(
 
         const user: IUserModel = await UserService.create(req.body);
 
-        req.flash(
-            'sucsess',
-            `New user ${user.fullName} was created (with _id = ${user.id})!`,
-        );
-        req.flash('token', req.body.xatoken);
-
-        res.redirect('/v1/users');
+        res.status(200).json({
+            data: user,
+        });
     } catch (error) {
         if (error instanceof ValidationError) {
-            req.flash('error', error.message);
-
-            return res.redirect('/v1/users');
-        }
-        if (error.name === 'MongoError') {
-            req.flash('error', `${error.name}: ${error.errmsg}`);
-            res.redirect('/v1/users');
+            res.status(422).json({
+                error: error.name,
+                details: error.message,
+            });
 
             return;
         }
-        req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/users');
+        if (error.name === 'MongoError') {
+            res.status(422).json({
+                error: error.name,
+                details: error.errmsg,
+            });
+
+            return;
+        }
+        res.status(500).json({
+            message: error.name,
+            details: error.message,
+        });
 
         next(error);
     }
@@ -190,24 +184,22 @@ export async function updateById(
             req.body,
         );
 
-        req.flash(
-            'sucsess',
-            `User ${user.fullName} (with _id = ${user.id}) has been
-        updated successfully!`,
-        );
-        req.flash('token', req.body.xatoken);
-
-        res.redirect('/v1/users');
+        res.status(200).json({
+            data: user,
+        });
     } catch (error) {
         if (error instanceof ValidationError) {
-            req.flash('error', error.message);
-            res.redirect('/v1/users');
+            res.status(422).json({
+                error: error.name,
+                details: error.message,
+            });
 
             return;
         }
-
-        req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/users');
+        res.status(500).json({
+            message: error.name,
+            details: error.message,
+        });
 
         next(error);
     }
@@ -237,24 +229,22 @@ export async function deleteById(
 
         const user: IUserModel = await UserService.deleteById(req.body.id);
 
-        req.flash(
-            'sucsess',
-            `User ${user.fullName} (with _id = ${user.id}) has been
-        deleted successfully!`,
-        );
-        req.flash('token', req.body.xatoken);
-
-        res.redirect('/v1/users');
+        res.status(200).json({
+            data: user,
+        });
     } catch (error) {
         if (error instanceof ValidationError) {
-            req.flash('error', error.message);
-            res.redirect('/v1/users');
+            res.status(422).json({
+                error: error.name,
+                details: error.message,
+            });
 
             return;
         }
-
-        req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/users');
+        res.status(500).json({
+            message: error.name,
+            details: error.message,
+        });
 
         next(error);
     }

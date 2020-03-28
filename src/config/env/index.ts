@@ -8,7 +8,6 @@ interface IConfig {
         MONGODB_URI: string;
         MONGODB_DB_MAIN: string;
     };
-    dropboxToken: string;
     secret: string;
 }
 
@@ -18,20 +17,18 @@ const development: IConfig = {
     port: process.env.PORT || 3000,
     database: {
         MONGODB_URI: process.env.MONGODB_URI || 'mongodb://localhost:27017/',
-        MONGODB_DB_MAIN: process.env.MONGODB_DB_MAIN || 'users_ts_db',
+        MONGODB_DB_MAIN: process.env.MONGODB_DB_MAIN || 'users_db',
     },
-    dropboxToken: process.env.DROPBOX_TOKEN || 'DropboxKey',
-    secret: process.env.SECRET || '@QEGTUI',
+    secret: process.env.SECRET || '@CANS',
 };
 
 const production: IConfig = {
     port: process.env.PORT || 3000,
     database: {
         MONGODB_URI: process.env.MONGODB_URI || 'mongodb://production_uri/',
-        MONGODB_DB_MAIN: process.env.MONGODB_DB_MAIN || 'users_ts_db',
+        MONGODB_DB_MAIN: process.env.MONGODB_DB_MAIN || 'users_db',
     },
-    dropboxToken: process.env.DROPBOX_TOKEN || 'DropboxKey',
-    secret: process.env.SECRET || '@QEGTUI',
+    secret: process.env.SECRET || '@CANS',
 };
 
 const test: IConfig = {
@@ -40,8 +37,7 @@ const test: IConfig = {
         MONGODB_URI: process.env.MONGODB_URI || 'mongodb://localhost:27017',
         MONGODB_DB_MAIN: 'test_users_db',
     },
-    dropboxToken: process.env.DROPBOX_TOKEN || 'DropboxKey',
-    secret: process.env.SECRET || '@QEGTUI',
+    secret: process.env.SECRET || '@CANS',
 };
 
 const config: {

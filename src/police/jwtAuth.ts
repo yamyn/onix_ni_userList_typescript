@@ -18,10 +18,7 @@ export function isAuthenticated(
     res: Response,
     next: NextFunction,
 ): void {
-    const authFromFlash: string = req.flash('token')[0];
-
-    const token: any =
-        req.headers['x-access-token'] || req.body.xatoken || authFromFlash;
+    const token: any = req.headers['x-access-token'];
 
     if (token) {
         try {
@@ -31,13 +28,13 @@ export function isAuthenticated(
 
             return next();
         } catch (error) {
-            res.redirect('/v1/auth/getRefresh');
+            res.status(500).json({ message: error.message });
 
             return;
         }
     }
 
-    res.status(301).redirect('/v1/auth/login');
+    res.status(500).json({ message: 'Token is missing!' });
 
     return;
 }

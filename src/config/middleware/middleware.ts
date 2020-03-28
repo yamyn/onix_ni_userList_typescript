@@ -9,7 +9,7 @@ import * as cors from 'cors';
 import * as helmet from 'helmet';
 import * as express from 'express';
 import * as methodOverride from 'method-override';
-import * as csrf from 'csurf';
+import config from '../env';
 
 /**
  * @export
@@ -27,14 +27,12 @@ export function configure(app: express.Application): void {
     app.use(bodyParser.json());
     // parse Cookie header and populate req.cookies with an object keyed by the cookie names.
     app.use(cookieParser());
-    // added csrf token for request with to use cookie
-    app.use(csrf({ cookie: true }));
     // returns the compression middleware
     app.use(compression());
     // express session for create session
     app.use(
         session({
-            secret: 'FixicMom',
+            secret: config.secret,
             cookie: {
                 maxAge: 3600 * 24,
             },
@@ -42,8 +40,6 @@ export function configure(app: express.Application): void {
             saveUninitialized: true,
         }),
     );
-    // allow to get flash message in response
-    app.use(flash());
     // helps you secure your Express apps by setting various HTTP headers
     app.use(helmet());
     // providing a Connect/Express middleware that

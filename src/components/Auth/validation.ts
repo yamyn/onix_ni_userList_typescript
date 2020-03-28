@@ -44,32 +44,6 @@ class AdminValidation extends Validation {
             allowUnknown: true,
         });
     }
-
-    /**
-     * @param {{ id: string }} body
-     * @returns {Joi.ValidationResult}
-     * @memberof AdminValidation
-     */
-    updateById(body: { id: string }): Joi.ValidationResult {
-        return this.Joi.object({
-            id: this.Joi.objectId(),
-            fullName: this.Joi.string()
-                .min(3)
-                .max(30)
-                .required(),
-        }).validate(body, { allowUnknown: true });
-    }
-
-    /**
-     * @param {{ id: string }} body
-     * @returns {Joi.ValidationResult}
-     * @memberof AdminValidation
-     */
-    deleteById(body: { id: string }): Joi.ValidationResult {
-        return this.Joi.object({
-            id: this.Joi.objectId(),
-        }).validate(body, { allowUnknown: true });
-    }
 }
 
 export default new AdminValidation();
