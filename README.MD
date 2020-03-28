@@ -39,3 +39,11 @@
     curl --location --request GET 'localhost:3030/v1/emails/' \
 
 ```
+
+## tests
+
+### integration testing
+
+```
+   'npm test'
+```
