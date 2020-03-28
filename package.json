@@ -6,7 +6,6 @@
         "build": "tsc --skipLibCheck",
         "start": "tsc --skipLibCheck && node ./build/config/server/index.js",
         "ts:watch": "tsc -w",
-        "screen": "tsc --skipLibCheck && node ./build/components/Screens/services/toMakeScreen.js",
         "test": "NODE_ENV=test mocha -r ts-node/register __test__/index.js --exit"
     },
     "dependencies": {
