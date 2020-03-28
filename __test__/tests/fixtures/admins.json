@@ -1,0 +1,15 @@
+{
+    "signup": {
+        "nickName": "mango",
+        "email": "mango@mail.com",
+        "password": "qwerty"
+    },
+    "login": {
+        "email": "mango@mail.com",
+        "password": "qwerty"
+    },
+    "loginInvalid": {
+        "email": "mango@mail.com",
+        "password": "qwer12"
+    }
+}

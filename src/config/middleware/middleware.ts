@@ -1,14 +1,11 @@
 import * as bodyParser from 'body-parser';
 import * as compression from 'compression';
 import * as session from 'express-session';
-// tslint:disable-next-line: no-var-requires
-const flash: any = require('connect-flash');
-
 import * as cookieParser from 'cookie-parser';
 import * as cors from 'cors';
 import * as helmet from 'helmet';
 import * as express from 'express';
-import * as methodOverride from 'method-override';
+
 import config from '../env';
 
 /**
@@ -16,9 +13,6 @@ import config from '../env';
  * @param {express.Application} app
  */
 export function configure(app: express.Application): void {
-    app.use(methodOverride('_method'));
-    app.set('views', `${__dirname}/../../views`);
-    app.set('view engine', 'ejs');
     app.use(
         bodyParser.urlencoded({
             extended: false,

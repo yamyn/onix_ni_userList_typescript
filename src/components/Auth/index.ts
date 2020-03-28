@@ -11,11 +11,6 @@ import {
     checkRefresh,
 } from './services/getTokens';
 
-// {
-//     "x-access-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJpY2t5Lm1vbnRoQGdtYWlsLmNvbSIsImlhdCI6MTU4NTM5MTEwNCwiZXhwIjoxNTg1MzkxNDA0fQ.pY1NF_LR__tGOassR2SWfh4bFVFbGRmKaVzz555dJA4",
-//     "refresh-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJpY2t5Lm1vbnRoQGdtYWlsLmNvbSIsImlhdCI6MTU4NTM5MTEwNCwiZXhwIjoxNTg1NjUwMzA0fQ.Z9S4pyE-6Utxvx68injcESi4Bzs_lhlmdw5uvFezSoU"
-// }
-
 /**
  * @export
  * @function
@@ -52,8 +47,12 @@ export async function login(
         );
 
         res.status(200).json({
-            'x-access-token': accesToken,
-            'refresh-token': refreshToken,
+            logged: true,
+            tokens: {
+                accesToken,
+                refreshToken,
+            },
+            message: 'Sign in successfull',
         });
     } catch (error) {
         if (error instanceof ValidationError) {
@@ -110,8 +109,12 @@ export async function signup(
         );
 
         res.status(200).json({
-            'x-access-token': accesToken,
-            'refresh-token': refreshToken,
+            logged: true,
+            tokens: {
+                accesToken,
+                refreshToken,
+            },
+            message: 'Sign in successfull',
         });
     } catch (error) {
         if (error instanceof ValidationError) {
@@ -172,8 +175,12 @@ export async function refreshUpdate(
         );
 
         res.status(200).json({
-            'x-access-token': accesToken,
-            'refresh-token': refreshToken,
+            logged: true,
+            tokens: {
+                accesToken,
+                refreshToken,
+            },
+            message: 'updating successfull',
         });
     } catch (error) {
         if (error instanceof ValidationError) {

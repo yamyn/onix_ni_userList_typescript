@@ -1,0 +1,31 @@
+{
+    "forGET": [
+        {
+            "email": "test1@gmail.com",
+            "fullName": "Test1"
+        },
+        {
+            "email": "test2@gmail.com",
+            "fullName": "Test2"
+        },
+        {
+            "email": "test3@gmail.com",
+            "fullName": "Test3"
+        },
+        {
+            "email": "test4@gmail.com",
+            "fullName": "Test4"
+        }
+    ],
+    "newUser": {
+        "email": "polly@gmail.com",
+        "fullName": "Polly"
+    },
+    "invalidUser": {
+        "fullName": "Mango"
+    },
+    "shortNameUser": {
+        "email": "mango@gmail.com",
+        "fullName": "Ma"
+    }
+}

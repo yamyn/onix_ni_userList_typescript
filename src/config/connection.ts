@@ -10,10 +10,6 @@ interface IConnectOptions {
     useUnifiedTopology?: boolean;
 }
 
-// const MONGODB_URI: string = 'mongodb://localhost:27017/';
-// const MONGODB_DB_MAIN: string = 'users_db';
-// const MONGO_URI: string = `${MONGODB_URI}${MONGODB_DB_MAIN}`;
-
 const MONGO_URI: string = `${config.database.MONGODB_URI}${config.database.MONGODB_DB_MAIN}`;
 
 const connectOptions: IConnectOptions = {

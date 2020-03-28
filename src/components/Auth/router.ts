@@ -36,7 +36,7 @@ router.post('/signup', AuthComponent.signup);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-router.get('/refreshUp', AuthComponent.refreshUpdate);
+router.get('/refreshup', AuthComponent.refreshUpdate);
 
 /**
  * @export {express.Router}

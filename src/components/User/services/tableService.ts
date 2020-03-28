@@ -22,8 +22,8 @@ const UserService: IUserService = {
      * @returns {Promise<UserModel>}
      * @memberof UserService
      */
-    findOne(code: string): Promise<IUserModel> {
-        return UserModel.findOne(code).exec();
+    findById(id: string): Promise<IUserModel> {
+        return UserModel.findById(id).exec();
     },
 
     /**

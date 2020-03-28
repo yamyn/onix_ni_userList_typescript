@@ -17,7 +17,7 @@ export interface IUserService {
      * @returns {Promise<IUserModel>}
      * @memberof IUserService
      */
-    findOne(code: string): Promise<IUserModel>;
+    findById(id: string): Promise<IUserModel>;
 
     /**
      * @param {IUserModel} IUserModel

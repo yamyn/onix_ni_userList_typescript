@@ -21,7 +21,7 @@ class UserValidation extends Validation {
      * @returns {Joi.ValidationResult}
      * @memberof UserValidation
      */
-    findOne(body: { id: string }): Joi.ValidationResult {
+    findById(body: { id: string }): Joi.ValidationResult {
         return this.Joi.object({
             id: this.Joi.objectId(),
         }).validate(body);

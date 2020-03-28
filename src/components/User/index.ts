@@ -74,7 +74,7 @@ export async function findById(
     next: NextFunction,
 ): Promise<void> {
     try {
-        const { error }: Joi.ValidationResult = UserValidation.findOne({
+        const { error }: Joi.ValidationResult = UserValidation.findById({
             id: req.params.id,
         });
 
@@ -82,9 +82,9 @@ export async function findById(
             throw new ValidationError(error.details[0].message);
         }
 
-        const user: IUserModel = await UserService.findOne(req.params.id);
+        const user: IUserModel = await UserService.findById(req.params.id);
 
-        res.status(200).json({
+        res.status(201).json({
             data: user,
         });
     } catch (error) {
@@ -128,7 +128,7 @@ export async function create(
 
         const user: IUserModel = await UserService.create(req.body);
 
-        res.status(200).json({
+        res.status(201).json({
             data: user,
         });
     } catch (error) {
@@ -184,7 +184,7 @@ export async function updateById(
             req.body,
         );
 
-        res.status(200).json({
+        res.status(201).json({
             data: user,
         });
     } catch (error) {
@@ -229,7 +229,7 @@ export async function deleteById(
 
         const user: IUserModel = await UserService.deleteById(req.body.id);
 
-        res.status(200).json({
+        res.status(201).json({
             data: user,
         });
     } catch (error) {

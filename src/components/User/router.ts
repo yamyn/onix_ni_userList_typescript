@@ -35,7 +35,7 @@ router.get('/statistic', UserComponent.getStatistic);
  * @param {string} path - Express path
  * @param {callback} middleware - Express middleware.
  */
-// router.get('/:id', UserComponent.findById);
+router.get('/:id', UserComponent.findById);
 
 /**
  * Route serving a new user
