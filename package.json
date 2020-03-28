@@ -6,7 +6,8 @@
         "build": "tsc --skipLibCheck",
         "start": "tsc --skipLibCheck && node ./build/config/server/index.js",
         "ts:watch": "tsc -w",
-        "screen": "tsc --skipLibCheck && node ./build/components/Screens/services/toMakeScreen.js"
+        "screen": "tsc --skipLibCheck && node ./build/components/Screens/services/toMakeScreen.js",
+        "test": "NODE_ENV=test mocha -r ts-node/register __test__/index.js --exit"
     },
     "dependencies": {
         "@hapi/joi": "17.1.0",
@@ -38,6 +39,7 @@
     "devDependencies": {
         "@types/bcrypt": "3.0.0",
         "@types/body-parser": "1.19.0",
+        "@types/chai": "^4.2.11",
         "@types/chart.js": "2.9.15",
         "@types/compression": "1.7.0",
         "@types/connect-flash": "0.0.35",
@@ -60,9 +62,13 @@
         "@types/mongoose": "5.7.3",
         "@types/node": "13.7.7",
         "@types/puppeteer": "2.0.1",
+        "@types/supertest": "^2.0.8",
+        "chai": "^4.2.0",
         "cz-conventional-changelog": "3.1.0",
+        "mocha": "^7.1.1",
         "nodemon": "2.0.2",
         "source-map-loader": "0.2.4",
+        "supertest": "^4.0.2",
         "tslint": "6.0.0",
         "tslint-config-airbnb": "5.11.2",
         "tslint-config-prettier": "1.18.0",
