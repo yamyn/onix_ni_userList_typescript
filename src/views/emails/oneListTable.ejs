@@ -1,0 +1,18 @@
+<section class="row justify-content-center pt-5">
+    <table class="table table-hover ">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col"><%=emailList.createdAt %></th>
+                <th scope="col">amount - <%=emailList.emails.length %></th>
+            </tr>
+        </thead>
+        <tbody id="userTBody">
+            <% emailList.emails.forEach(function(email, i){ %>
+            <tr>
+                <td id="email-date"><%=email %></td>
+            </tr>
+           <% }); %>
+        </tbody>
+    </table>
+</section>
+</div>

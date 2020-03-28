@@ -1,5 +1,6 @@
 import ScreensModel, { IScreensModel } from '../model';
 import { IScreensService } from './Interface';
+import { Types } from 'mongoose';
 
 /**
  * @export
@@ -8,6 +9,7 @@ import { IScreensService } from './Interface';
 
 const ScreensService: IScreensService = {
     /**
+     * @method findAll
      * @returns {Promise < IScreensModel[] >}
      * @memberof ScreensService
      */
@@ -16,11 +18,25 @@ const ScreensService: IScreensService = {
     },
 
     /**
+     * @method create
+     * @param { IScreensModel } screenLink
      * @returns {Promise < IScreensModel >}
      * @memberof ScreensService
      */
     create(screenLink: IScreensModel): Promise<IScreensModel> {
         return ScreensModel.create(screenLink);
+    },
+
+    /**
+     * @method deleteById
+     * @param {string} id
+     * @returns {Promise< IScreensModel >}
+     * @memberof ScreensService
+     */
+    deleteById(id: string): Promise<IScreensModel> {
+        return ScreensModel.findByIdAndDelete({
+            _id: Types.ObjectId(id),
+        }).exec();
     },
 };
 

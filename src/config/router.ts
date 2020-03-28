@@ -4,7 +4,7 @@ import UserRouter from '../components/User/router';
 import EmailListRouter from '../components/EmailsList/router';
 import ScreensRouter from '../components/Screens/router';
 import AuthRouter from '../components/Auth/router';
-import * as jwtConfig from '../police/jwtAuth';
+import * as passportConfig from '../police/passport';
 
 /**
  * @function
@@ -33,7 +33,7 @@ export function init(app: express.Application): void {
      * @param {string} path - Express path
      * @param {callback} middleware - Express middleware.
      */
-    app.use('/v1/users', jwtConfig.isAuthenticated, UserRouter);
+    app.use('/v1/users', passportConfig.isAuthenticated, UserRouter);
 
     /**
      * Forwards any requests to the /v1/emails URI to EmailListRouter.
@@ -43,7 +43,7 @@ export function init(app: express.Application): void {
      * @param {string} path - Express path
      * @param {callback} middleware - Express middleware.
      */
-    app.use('/v1/emails', EmailListRouter);
+    app.use('/v1/emails', passportConfig.isAuthenticated, EmailListRouter);
 
     /**
      * Forwards any requests to the /v1/screens URI to ScreensRouter.

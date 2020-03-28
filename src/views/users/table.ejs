@@ -1,8 +1,6 @@
-<h1>UsersList</h1>
 <section class="row justify-content-center py-3">
     <div class="col-6 text-left p-0">
         <form action="/v1/users/statistic?_method=GET" method="post">
-            <input type="hidden" name="xatoken" value="" />
             <button type="submit" class="btn btn-primary">
                 Get statistic for 30 days
             </button>
@@ -20,7 +18,7 @@
     </div>
    
 
-    <%- include("./createUserForm.ejs") %> <%- include("./changeUser.ejs") %>
+    <%- include("./createUserForm.ejs") %> <%- include("./changeUser.ejs") %> <%- include("../deleteTable.ejs") %>
 </section>
 <section class="row justify-content-center">
     <table class="table table-hover ">
@@ -77,21 +75,6 @@
     </table>
 </section>
 </div>
-<script
-    src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-    crossorigin="anonymous"
-></script>
-<script
-    src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-    crossorigin="anonymous"
-></script>
-<script
-    src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-    crossorigin="anonymous"
-></script>
 <script>
     const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
     const tBody = document.querySelector("#userTBody");

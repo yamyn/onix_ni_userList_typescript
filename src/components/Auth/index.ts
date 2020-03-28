@@ -4,36 +4,7 @@ import ValidationError from '../../error/ValidationError';
 import { NextFunction, Request, Response } from 'express';
 import { IAdminModel } from './model';
 import Joi = require('@hapi/joi');
-import {
-    ITokens,
-    ITokenInfo,
-    generateTokens,
-    checkRefresh,
-} from './services/getTokens';
-
-/**
- * @export
- * @function
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise < void >}
- */
-export async function findAll(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-): Promise<void> {
-    try {
-        const admins: IAdminModel[] = await AdminService.findAll();
-
-        res.status(200).json({ admins });
-    } catch (error) {
-        res.status(500).json({ message: 'Something went wrong' });
-
-        next(error);
-    }
-}
+import * as passport from 'passport';
 
 /**
  * @export
@@ -57,7 +28,7 @@ export async function loginPage(
         });
     } catch (error) {
         req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/auth/login');
+        res.redirect(500, '/v1/auth/login');
 
         next(error);
     }
@@ -86,37 +57,25 @@ export async function login(
             throw new ValidationError(error.details[0].message);
         }
 
-        const admin: IAdminModel = await AdminService.findOne(req.body.email);
-
-        const isMatched: boolean =
-            admin && (await admin.comparePassword(req.body.password));
-
-        if (!isMatched) {
-            throw new ValidationError('Pasword is invalid!');
-        }
-
-        const { accesToken, refreshToken }: ITokens = await generateTokens(
-            admin,
-        );
-
-        res.status(200).render('loading/spinner', {
-            tokens: { accesToken, refreshToken },
-            script: 'saveTokenLogin.ejs',
-        });
+        passport.authenticate('local', {
+            successRedirect: '/v1/users/',
+            failureRedirect: '/v1/auth/signup',
+            failureFlash: true,
+        })(req, res, next);
     } catch (error) {
         if (error instanceof ValidationError) {
             req.flash('error', error.message);
 
-            return res.redirect('/v1/auth/login');
+            return res.redirect(401, '/v1/auth/login');
         }
         if (error.name === 'MongoError') {
             req.flash('error', `${error.name}: ${error.errmsg}`);
-            res.redirect('/v1/auth/login');
+            res.redirect(401, '/v1/auth/login');
 
             return;
         }
         req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/auth/login');
+        res.redirect(500, '/v1/auth/login');
 
         next(error);
     }
@@ -143,7 +102,7 @@ export async function signupPage(
         });
     } catch (error) {
         req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/auth/signup');
+        res.redirect(500, '/v1/auth/signup');
 
         next(error);
     }
@@ -173,28 +132,21 @@ export async function signup(
 
         const admin: IAdminModel = await AdminService.create(req.body);
 
-        const { accesToken, refreshToken }: ITokens = await generateTokens(
-            admin,
-        );
-
-        res.status(200).render('spinner', {
-            tokens: { accesToken, refreshToken },
-            script: 'saveTokenLogin.ejs',
-        });
+        res.redirect('/v1/auth/login');
     } catch (error) {
         if (error instanceof ValidationError) {
             req.flash('error', error.message);
 
-            return res.redirect('/v1/auth/signup');
+            return res.redirect(401, '/v1/auth/signup');
         }
         if (error.name === 'MongoError') {
             req.flash('error', `${error.name}: ${error.errmsg}`);
-            res.redirect('/v1/auth/signup');
+            res.redirect(401, '/v1/auth/signup');
 
             return;
         }
         req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/auth/signup');
+        res.redirect(500, '/v1/auth/signup');
 
         next(error);
     }
@@ -203,177 +155,19 @@ export async function signup(
 /**
  * @export
  * @function
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise < void >}
+ * @summary Makes logout from account
+ * @param {Express.Request} req
+ * @param {Express.Response} res
+ * @param {Express.NextFunction} next
+ * @returns {Express.Response}
  */
-export async function refreshPage(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-): Promise<void> {
-    try {
-        res.status(200).render('loading/spinner', {
-            script: 'getRefreshAndSave.ejs',
-        });
-    } catch (error) {
-        req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/auth/login');
-
-        next(error);
-    }
-}
-
-/**
- * @export
- * @function
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise < void >}
- */
-
-export async function refreshUpdate(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-): Promise<void> {
-    try {
-        const token: any = req.headers['refresh-token'];
-        const reqAdminInfo: ITokenInfo | null = checkRefresh(token);
-
-        if (!reqAdminInfo) return res.redirect('/v1/auth/login');
-
-        const admin: IAdminModel = await AdminService.findOne(
-            reqAdminInfo.email,
-        );
-
-        const isMatched: boolean = admin && (await admin.compareRefresh(token));
-
-        if (!isMatched) return res.redirect('/v1/auth/login');
-
-        const { accesToken, refreshToken }: ITokens = await generateTokens(
-            admin,
-        );
-
-        res.status(200).json({
-            accesToken,
-            refreshToken,
-        });
-    } catch (error) {
-        if (error instanceof ValidationError) {
-            req.flash('error', error.message);
-
-            return res.redirect('/v1/auth/login');
-        }
-        if (error.name === 'MongoError') {
-            req.flash('error', `${error.name}: ${error.errmsg}`);
-            res.redirect('/v1/auth/login');
-
-            return;
-        }
-        req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/auth/login');
-
-        next(error);
-    }
-}
-
-/**
- * @export
- * @function
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise<void>}
- */
-export async function updateById(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-): Promise<void> {
-    try {
-        const { error }: Joi.ValidationResult = adminValidation.updateById(
-            req.body,
-        );
-
+export function logout(req: Request, res: Response, next: NextFunction): void {
+    req.session.destroy((error: Error): void => {
         if (error) {
-            throw new ValidationError(error.details[0].message);
-        }
-
-        const user: IAdminModel = await AdminService.updateById(
-            req.body.id,
-            req.body,
-        );
-
-        // req.flash(
-        //     'sucsess',
-        //     `User ${user.fullname} (with _id = ${user.id}) has been
-        // updated successfully!`,
-        // );
-        // res.redirect('/v1/users');
-    } catch (error) {
-        if (error instanceof ValidationError) {
-            req.flash('error', error.message);
-            res.redirect('/v1/users');
+            next(error);
 
             return;
         }
-
-        req.flash('error', `${error.name}: ${error.message}`);
-        res.redirect('/v1/users');
-
-        next(error);
-    }
-}
-
-/**
- * @export
- * @function
- * @param {express.Request} req
- * @param {express.Response} res
- * @param {express.NextFunction} next
- * @returns {Promise<void>}
- */
-export async function deleteById(
-    req: Request,
-    res: Response,
-    next: NextFunction,
-): Promise<void> {
-    try {
-        const { error }: Joi.ValidationResult = adminValidation.deleteById(
-            req.body,
-        );
-
-        if (error) {
-            throw new ValidationError(error.details[0].message);
-        }
-
-        const user: IAdminModel = await AdminService.deleteById(req.body.id);
-
-        // req.flash(
-        //     'sucsess',
-        //     `New user ${user.fullname} was created (with _id = ${user.id})!`,
-        // );
-        // req.flash(
-        //     'sucsess',
-        //     `User ${user.fullname} (with _id = ${user.id}) has been
-        // deleted successfully!`,
-        // );
-
-        // res.redirect('/v1/users');
-    } catch (error) {
-        if (error instanceof ValidationError) {
-            res.status(422).render('errors/validError.ejs', {
-                method: 'delete',
-                name: error.name,
-                message: error.message,
-            });
-        }
-        // req.flash('error', `${error.name}: ${error.message}`);
-        // res.redirect('/v1/users');
-
-        next(error);
-    }
+    });
+    res.redirect(308, '/v1/auth/login');
 }

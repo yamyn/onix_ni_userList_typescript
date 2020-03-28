@@ -13,4 +13,14 @@ const router: Router = Router();
  */
 router.get('/', ScreensComponent.findAll);
 
+/**
+ * Route serving a removing user
+ * @name /v1/screens
+ * @function
+ * @inner
+ * @param {string} path -Express path
+ * @param {callback} middleware - Express middleware
+ */
+router.delete('/', ScreensComponent.deleteById);
+
 export default router;

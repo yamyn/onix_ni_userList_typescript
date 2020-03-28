@@ -1,0 +1,39 @@
+<%- include("../deleteTable.ejs") %>
+<section class="row justify-content-center pt-5">
+    <table class="table table-hover ">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">link</th>
+                <th scope="col">date</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody id="userTBody">
+            <% screenList.forEach(function(screen, i){ %>
+            <tr class="text-left">
+                <th scope="row"><%=i + 1%></th>
+                <td id="email-date"><a href="<%=screen.link %>"><%=screen.link %></a></td>
+                <td id="email-count"><%=screen.date %></td>
+                <td>
+                    <label
+                        class="btn btn-sm btn-outline-danger"
+                        data-toggle="modal"
+                        data-target="#deleteUserModal"
+                    >
+                        <input
+                            class="visually-hidden"
+                            type="radio"
+                            form="deleteUserForm"
+                            name="id"
+                            value="<%=screen.id %>"
+                        />
+                        delete
+                    </label>
+                </td>
+            </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</section>
+</div>

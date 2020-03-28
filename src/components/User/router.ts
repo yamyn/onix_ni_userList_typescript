@@ -27,6 +27,7 @@ router.get('/', UserComponent.findAll);
  * @param {callback} middleware - Express middleware.
  */
 router.get('/statistic', UserComponent.getStatistic);
+
 /**
  * Route serving a user
  * @name /v1/users/:id

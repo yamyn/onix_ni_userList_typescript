@@ -16,7 +16,7 @@ export interface IAdminService {
      * @returns {Promise<IAdminModel>}
      * @memberof IAdminService
      */
-    findOne(email: string): Promise<IAdminModel>;
+    findOne(id: string): Promise<IAdminModel>;
 
     /**
      * @param {IAdminModel} IAdminModel
@@ -24,13 +24,6 @@ export interface IAdminService {
      * @memberof IAdminService
      */
     create(IAdminModel: IAdminModel): Promise<IAdminModel>;
-
-    /**
-     * @param {IAdminModel} IAdminModel
-     * @returns {Promise<IAdminModel>}
-     * @memberof IUserService
-     */
-    updateRefresh(id: string, refreshToken: string): Promise<IAdminModel>;
 
     /**
      * @param {IAdminModel} IAdminModel

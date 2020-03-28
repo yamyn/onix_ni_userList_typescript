@@ -28,7 +28,7 @@ class AdminValidation extends Validation {
     }
 
     /**
-     * @param {IUserModel} params
+     * @param {IAdminModel} params
      * @returns {Joi.ValidationResult}
      * @memberof AdminValidation
      */
