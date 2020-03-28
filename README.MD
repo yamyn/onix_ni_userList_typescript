@@ -9,6 +9,13 @@
 
 ```
 
+### get statistic for users
+
+```
+    curl --location --request GET 'localhost:3030/v1/users/statistic' \
+
+```
+
 ## Screen
 
 ### make screen users`s list and save in DB
